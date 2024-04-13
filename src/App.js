@@ -18,6 +18,10 @@ export default function App() {
   const [currentWorkout, setCurrentWorkout] = useState({});
   const [previousWorkout, setPreviousWorkout] = useState({});
 
+  const eraseLocalStorage = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+  };
+
   const persistCurrentWorkout = () => {
     const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
@@ -50,7 +54,7 @@ export default function App() {
   const handleWeightChange = (e) => setWeight(e.target.value);
   const handleRepsChange = (e) => setReps(e.target.value);
 
-  const handleRecord = () => {
+  const handleSave = () => {
     // must be a new object to trigger a re-render
     setCurrentWorkout({
       ...currentWorkout,
@@ -105,13 +109,25 @@ export default function App() {
 
       <button
         className="w-full bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
-        onClick={handleRecord}
+        onClick={handleSave}
         disabled={!exercise || !weight || !reps}
       >
-        Record
+        Save
+      </button>
+
+      <button
+        className="m-auto bg-blue-500 text-white rounded text-sm"
+        onClick={() => window.confirm("Are you sure?") && eraseLocalStorage()}
+      >
+        Erase
       </button>
 
       <WorkoutRecord date="Today" workout={currentWorkout} />
+
+      {Object.keys(previousWorkout).length > 0 &&
+        Object.entries(previousWorkout).map(([date, workout], index) => (
+          <WorkoutRecord date={date} workout={workout} key={index} />
+        ))}
     </div>
   );
 }

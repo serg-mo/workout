@@ -1,6 +1,5 @@
 import React from "react";
 
-// TODO: there are two relevant parts here: date + workout {exercise: [weight x reps]}
 export default function WorkoutRecord({ date, workout }) {
 	if (!workout || !Object.keys(workout).length) {
 		return null;
