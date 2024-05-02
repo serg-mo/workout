@@ -3,7 +3,7 @@ import { getWorkout } from "./lib";
 import Form from "./Form";
 import Footer from "./Footer";
 import Dashboard from "./Dashboard";
-import { persistWorkout, LOCAL_STORAGE_KEY } from "./lib";
+import { persistWorkout, initWorkout } from "./lib";
 
 // TODO: add a button + confirm for erasing local storage
 // TODO: preserve existing workouts, append only
@@ -16,19 +16,13 @@ import { persistWorkout, LOCAL_STORAGE_KEY } from "./lib";
 export default function App() {
   const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
   const [workoutName, workoutExercises] = getWorkout(todayIndex);
+
   const [currentWorkout, setCurrentWorkout] = useState({});
+  const [currentExercise, setExercise] = useState("");
 
   useEffect(() => {
     if (!Object.keys(currentWorkout).length) {
-      const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-      const workouts =
-        JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-      const workout = workouts[today] ?? false;
-
-      if (workout) {
-        console.log("Initializing current workout from local storage");
-        setCurrentWorkout(workout);
-      }
+      initWorkout(setCurrentWorkout);
     } else {
       // if the current workout has changed, but it's not empty
       persistWorkout(currentWorkout);
@@ -50,8 +44,15 @@ export default function App() {
   return (
     <div className="w-full text-3xl text-center p-2">
       <h1 className="font-bold mb-4">{workoutName}</h1>
-      <Form exercises={workoutExercises} handleSave={handleSave} />
-      <Dashboard currentWorkout={currentWorkout} />
+      <Form
+        exercises={workoutExercises}
+        exerciseState={[currentExercise, setExercise]}
+        handleSave={handleSave}
+      />
+      <Dashboard
+        currentWorkout={currentWorkout}
+        currentExercise={currentExercise}
+      />
       <Footer />
     </div>
   );

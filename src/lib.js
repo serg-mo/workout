@@ -43,10 +43,21 @@ export function arrayRange(min, max, step) {
   return array;
 }
 
+export function initWorkout(setWorkout) {
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const workouts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+  const workout = workouts[today] ?? false;
+
+  if (workout) {
+    console.log("Initializing current workout from local storage");
+    setWorkout(workout);
+  }
+}
+
 export function persistWorkout(workout) {
-  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-  const payload = { ...existing, [date]: workout }; // one workout per day
+  const payload = { ...existing, [today]: workout }; // one workout per day
 
   //console.log("Persisting workout", payload);
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));

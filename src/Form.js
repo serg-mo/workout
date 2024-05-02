@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { arrayRange } from "./lib";
 
-export default function Form({ exercises, handleSave }) {
-  const [exercise, setExercise] = useState("");
+export default function Form({ exercises, exerciseState, handleSave }) {
+  const [exercise, setExercise] = exerciseState;
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
 
