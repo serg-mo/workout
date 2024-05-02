@@ -5,7 +5,7 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "docs"),
-    publicPath: "auto",
+    publicPath: "https://serg-mo.github.io/workout/",
     filename: "bundle.js",
     clean: true,
   },

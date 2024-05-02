@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        customFont: ["Trebuchet MS", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

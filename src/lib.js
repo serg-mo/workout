@@ -19,6 +19,8 @@ const WEEKDAYS = [
   "SATURDAY",
 ];
 
+export const LOCAL_STORAGE_KEY = "workout";
+
 export function getWorkout(todayIndex) {
   for (let delta = 0; delta < 7; delta++) {
     const prevIndex = (7 + todayIndex - delta) % 7;
@@ -39,4 +41,13 @@ export function arrayRange(min, max, step) {
     array.push(i);
   }
   return array;
+}
+
+export function persistWorkout(workout) {
+  const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+  const payload = { ...existing, [date]: workout }; // one workout per day
+
+  //console.log("Persisting workout", payload);
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
 }
