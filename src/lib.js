@@ -45,7 +45,7 @@ export function arrayRange(min, max, step) {
 
 export function initWorkout(setWorkout) {
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const workouts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+  const workouts = getLocalStorage();
   const workout = workouts[today] ?? false;
 
   if (workout) {
@@ -56,9 +56,21 @@ export function initWorkout(setWorkout) {
 
 export function persistWorkout(workout) {
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+  const existing = getLocalStorage();
   const payload = { ...existing, [today]: workout }; // one workout per day
 
   //console.log("Persisting workout", payload);
+  setLocalStorage(payload);
+}
+
+export function setLocalStorage(payload) {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+}
+
+export function eraseLocalStorage() {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
+}
+
+export function getLocalStorage() {
+  return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
 }
