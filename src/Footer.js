@@ -6,9 +6,14 @@ export default function Footer() {
   const textareaRef = useRef(null);
 
   const onImport = () => {
-    const payload = JSON.parse(prompt("JSON")); // NOTE: must be in double quotes
-    if (Object.keys(payload).length) {
-      setLocalStorage(payload);
+    // NOTE: must use double quotes
+    try {
+      const payload = JSON.parse(prompt("JSON"));
+      if (payload && Object.keys(payload).length) {
+        setLocalStorage(payload);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -24,28 +29,19 @@ export default function Footer() {
   };
 
   return (
-    <>
-      <div className="w-full flex flex-row justify-center mt-3">
-        <button
-          className="m-auto bg-blue-200 p-2 font-bold rounded text-sm"
-          onClick={onImport}
-        >
+    <footer>
+      <div className="w-full flex flex-row justify-center mt-3 font-bold text-sm">
+        <a className="m-auto" onClick={onImport}>
           Import
-        </button>
+        </a>
 
-        <button
-          className="m-auto bg-blue-200 p-2 font-bold rounded text-sm"
-          onClick={onReset}
-        >
+        <a className="m-auto" onClick={onReset}>
           Reset
-        </button>
+        </a>
 
-        <button
-          className="m-auto bg-blue-200 p-2 font-bold rounded text-sm"
-          onClick={onExport}
-        >
+        <a className="m-auto" onClick={onExport}>
           Export
-        </button>
+        </a>
       </div>
 
       <textarea
@@ -55,6 +51,6 @@ export default function Footer() {
         readOnly
         ref={textareaRef}
       />
-    </>
+    </footer>
   );
 }

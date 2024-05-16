@@ -1,3 +1,3 @@
 # Workout
 
-(Production)[https://serg-mo.github.io/workout/]
+[Production](https://serg-mo.github.io/workout/)

@@ -5,9 +5,6 @@ import Footer from "./Footer";
 import Dashboard from "./Dashboard";
 import { persistWorkout, initWorkout } from "./lib";
 
-// TODO: preserve existing workouts, append only
-// const today = (new Date()).toISOString().slice(0, 10); // YYYY-MM-DD
-
 // TODO: visualize timestamp, weight, and reps as a chart (scatter?)
 // TODO: look at timestamps to figure out the time between sets
 export default function App() {
@@ -37,7 +34,15 @@ export default function App() {
     }));
   };
 
-  // TODO: pass the current exercise to dashboard, so it can highlight the right exercise
+  const undoLast = () => {
+    if (!currentExercise) return;
+    setCurrentWorkout((prev) => {
+      const sets = [...(prev[currentExercise] ?? [])];
+      sets.pop(); // remove the most recent set
+      return { ...prev, [currentExercise]: sets };
+    });
+  };
+
   return (
     <div className="w-full text-3xl text-center p-2">
       <h1 className="font-bold mb-4">{workoutName}</h1>
@@ -45,6 +50,7 @@ export default function App() {
         exercises={workoutExercises}
         exerciseState={[currentExercise, setExercise]}
         handleSave={handleSave}
+        undoLast={undoLast}
       />
       <Dashboard
         currentWorkout={currentWorkout}
