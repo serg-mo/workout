@@ -1,30 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { eraseLocalStorage, getLocalStorage, setLocalStorage } from "./lib";
 
 export default function Footer() {
   const [exportString, setExportString] = useState("");
+  const textareaRef = useRef(null);
 
   const onImport = () => {
     const payload = JSON.parse(prompt("JSON")); // NOTE: must be in double quotes
-
     if (Object.keys(payload).length) {
-      if (!window.confirm("Are you sure?")) {
-        return;
-      }
-
-      return setLocalStorage(payload);
+      setLocalStorage(payload);
     }
   };
-  const onReset = () => {
-    if (!window.confirm("Are you sure?")) {
-      return;
-    }
 
-    return eraseLocalStorage();
-  };
+  const onReset = () => window.confirm("Are you sure?") && eraseLocalStorage();
+
+  // NOTE: navigator.clipboard.writeText does not work on Chrome for iOS
   const onExport = () => {
-    // NOTE: copy to clipboard does not work on mobile
     setExportString(JSON.stringify(getLocalStorage()));
+    setTimeout(() => {
+      textareaRef.current.select();
+      document.execCommand("copy");
+    }, 0);
   };
 
   return (
@@ -51,14 +47,14 @@ export default function Footer() {
           Export
         </button>
       </div>
-      {exportString && (
-        <textarea
-          value={exportString}
-          className="w-full text-xs mt-5 p-0 text-wrap"
-          rows={5}
-          onChange={() => {}}
-        />
-      )}
+
+      <textarea
+        value={exportString}
+        className="w-full text-xs mt-5 text-wrap focus:outline-none"
+        rows={3}
+        readOnly
+        ref={textareaRef}
+      />
     </>
   );
 }

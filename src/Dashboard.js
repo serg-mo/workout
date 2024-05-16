@@ -4,10 +4,9 @@ import { LOCAL_STORAGE_KEY } from "./lib";
 
 export default function Dashboard({ currentWorkout, currentExercise }) {
   // NOTE: previous workout is only relevant for the same day of the week
+  const week = 7 * (24 * 60 * 60 * 1000); // milliseconds
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const last = new Date(new Date().getTime() - 7 * (24 * 60 * 60 * 1000))
-    .toISOString()
-    .slice(0, 10); // YYYY-MM-DD
+  const last = new Date(new Date().getTime() - week).toISOString().slice(0, 10); // YYYY-MM-DD
 
   // TODO: I should probably memoize this
   const workouts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};

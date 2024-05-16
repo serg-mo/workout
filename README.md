@@ -1,1 +1,3 @@
-# Hardcoded workout routine with local storage persistence
+# Workout
+
+(Production)[https://serg-mo.github.io/workout/]

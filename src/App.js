@@ -5,14 +5,11 @@ import Footer from "./Footer";
 import Dashboard from "./Dashboard";
 import { persistWorkout, initWorkout } from "./lib";
 
-// TODO: add a button + confirm for erasing local storage
 // TODO: preserve existing workouts, append only
 // const today = (new Date()).toISOString().slice(0, 10); // YYYY-MM-DD
 
-// TODO: visualize timestamp, weight, and reps
-// TODO: redo the state schema, key it off the exercise
-// TODO: maybe I can do like three last workouts per exercise
-// TODO: I can get a precise timestamp of when the set is done, figure out the time between sets
+// TODO: visualize timestamp, weight, and reps as a chart (scatter?)
+// TODO: look at timestamps to figure out the time between sets
 export default function App() {
   const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
   const [workoutName, workoutExercises] = getWorkout(todayIndex);
