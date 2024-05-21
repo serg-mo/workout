@@ -28,10 +28,9 @@ export default function App() {
   }, [workout]);
 
   const handleSave = (exercise, weight, reps) => {
-    // console.log({ exercise, weight, reps });
     setWorkout((prev) => ({
       ...prev,
-      [exercise]: [...(prev[exercise] ?? []), { weight, reps }],
+      [exercise]: [...(prev?.[exercise] ?? []), { weight, reps }],
     }));
   };
 
