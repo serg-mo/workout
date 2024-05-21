@@ -6,7 +6,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "docs"),
     publicPath: "auto",
-    // publicPath: "https://serg-mo.github.io/workout/",
     filename: "bundle.js",
     clean: true,
   },
@@ -40,6 +39,5 @@ module.exports = {
     static: "./public",
     open: true,
     hot: true,
-    // historyApiFallback: true,
   },
 };

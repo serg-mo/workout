@@ -11,23 +11,23 @@ export default function Form({
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
 
-  const kettlebellWeights = [4.4, 8.8, 13.2, 17.6, 22, 26.4, 30.8];
+  const kettlebellWeights = [
+    4.4, 8.8, 13.2, 17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 48.4, 52.8,
+  ];
   const barbellWeights = arrayRange(5, 225, 5);
   const weightOptions = [...kettlebellWeights, ...barbellWeights].sort(
-    (a, b) => a - b
+    (a, b) => a - b // ascending
   );
   const repsOptions = arrayRange(3, 20, 1);
 
-  // TODO: changing the exercise should affect the weight and reps
   useEffect(() => {
     if (!exercise) return;
-    setWeight(0);
-    setReps(0);
+    setWeight("");
+    setReps("");
   }, [exercise]);
 
-  // TODO: disable undo if there is no currentExercise or it has no existing sets
   return (
-    <div className="flex flex-row flex-wrap justify-between">
+    <div className="flex flex-row flex-wrap justify-between text-3xl text-center">
       <select
         value={exercise}
         onChange={(e) => setExercise(e.target.value)}
@@ -36,16 +36,16 @@ export default function Form({
         <option value="" disabled>
           Exercise
         </option>
-        {exercises.map((exercise) => (
-          <option key={exercise} value={exercise}>
-            {exercise}
+        {exercises.map((value) => (
+          <option key={value} value={value}>
+            {value}
           </option>
         ))}
       </select>
 
       <select
         value={weight}
-        onChange={(e) => setWeight(parseFloat(e.target.value))}
+        onChange={(e) => setWeight(e.target.value)}
         className="grow appearance-none mr-1 p-3 border rounded focus:outline-none"
       >
         <option value={0} disabled>
@@ -60,7 +60,7 @@ export default function Form({
 
       <select
         value={reps}
-        onChange={(e) => setReps(parseFloat(e.target.value))}
+        onChange={(e) => setReps(e.target.value)}
         className="grow appearance-none ml-1 p-3 border rounded focus:outline-none"
       >
         <option value={0} disabled>

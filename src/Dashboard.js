@@ -8,13 +8,11 @@ export default function Dashboard({ currentWorkout, currentExercise }) {
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const last = new Date(new Date().getTime() - week).toISOString().slice(0, 10); // YYYY-MM-DD
 
-  // TODO: I should probably memoize this
   const workouts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
   const previousWorkout = workouts[last] ?? false;
 
-  // TODO: given the history and the current exercise, show previous sets
   return (
-    <div className="my-4">
+    <div className="my-4 flex-grow border">
       <div className="text-xl font-bold my-2">{currentExercise}</div>
       <Workout workout={currentWorkout} title={`Today ${today}`} />
       <Workout workout={previousWorkout} title={`Last (${last})`} />
