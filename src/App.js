@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getWorkout } from "./lib";
+import { getTodaysWorkout } from "./lib";
 import Form from "./Form";
 import Footer from "./Footer";
 import Dashboard from "./Dashboard";
@@ -9,38 +9,44 @@ import { persistWorkout, initWorkout } from "./lib";
 // TODO: Two workouts show up at the same day?
 // TODO: replace dips and pullups with cable exercises
 // TODO: changing the exercise should affect the weight and reps
-// TODO: disable undo if there is no currentExercise or it has no existing sets
+// TODO: disable undo if there is no exercise or it has no existing sets
 // TODO: undo is a click behind
 export default function App() {
   const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-  const [workoutName, workoutExercises] = getWorkout(todayIndex);
+  const [workoutName, workoutExercises] = getTodaysWorkout(todayIndex);
 
-  const [currentWorkout, setCurrentWorkout] = useState({});
-  const [currentExercise, setExercise] = useState("");
+  const [workout, setWorkout] = useState(null);
+  const [exercise, setExercise] = useState(""); // must exist outside of form
 
   useEffect(() => {
-    if (!Object.keys(currentWorkout).length) {
-      initWorkout(setCurrentWorkout);
+    if (workout === null) {
+      initWorkout(setWorkout);
     } else {
       // if the current workout has changed, but it's not empty
-      persistWorkout(currentWorkout);
+      persistWorkout(workout);
     }
-  }, [currentWorkout]);
+  }, [workout]);
 
   const handleSave = (exercise, weight, reps) => {
     // console.log({ exercise, weight, reps });
-    setCurrentWorkout((prev) => ({
+    setWorkout((prev) => ({
       ...prev,
       [exercise]: [...(prev[exercise] ?? []), { weight, reps }],
     }));
   };
 
   const undoLast = () => {
-    if (!currentExercise) return;
-    setCurrentWorkout((prev) => {
-      const sets = [...(prev[currentExercise] ?? [])];
+    if (!exercise) return;
+    setWorkout((prev) => {
+      const sets = [...(prev[exercise] ?? [])];
       sets.pop(); // remove the most recent set
-      return { ...prev, [currentExercise]: sets };
+
+      if (sets.length === 0) {
+        const { [exercise]: _, ...rest } = prev;
+        return rest; // all except the empty exercise
+      }
+
+      return { ...prev, [exercise]: sets };
     });
   };
 
@@ -49,14 +55,12 @@ export default function App() {
       <h1 className="font-bold mb-4 text-3xl text-center">{workoutName}</h1>
       <Form
         exercises={workoutExercises}
-        exerciseState={[currentExercise, setExercise]}
+        exercise={exercise}
+        setExercise={setExercise}
         handleSave={handleSave}
         undoLast={undoLast}
       />
-      <Dashboard
-        currentWorkout={currentWorkout}
-        currentExercise={currentExercise}
-      />
+      <Dashboard workout={workout} exercise={exercise} />
       <Footer />
     </div>
   );

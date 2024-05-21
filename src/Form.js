@@ -3,11 +3,11 @@ import { arrayRange } from "./lib";
 
 export default function Form({
   exercises,
-  exerciseState,
+  exercise,
+  setExercise,
   handleSave,
   undoLast,
 }) {
-  const [exercise, setExercise] = exerciseState;
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
 
@@ -22,8 +22,8 @@ export default function Form({
 
   useEffect(() => {
     if (!exercise) return;
-    setWeight("");
-    setReps("");
+    setWeight(0);
+    setReps(0);
   }, [exercise]);
 
   return (

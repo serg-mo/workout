@@ -1,5 +1,6 @@
 import moment from "moment";
 
+// TODO: these should have notes, muscle groups, etc
 const WORKOUTS = {
   "MONDAY (LEGS)": [
     "Squat (17)",
@@ -27,7 +28,7 @@ export function formatDate(when = new Date()) {
   return moment(when).format("YYYY-MM-DD");
 }
 
-export function getWorkout(todayIndex) {
+export function getTodaysWorkout(todayIndex) {
   for (let delta = 0; delta < 7; delta++) {
     const prevIndex = (7 + todayIndex - delta) % 7;
     const day = WEEKDAYS[prevIndex];
@@ -55,7 +56,6 @@ export function initWorkout(setWorkout) {
   const workout = workouts[today] ?? false;
 
   if (workout) {
-    console.log("Initializing current workout from local storage");
     setWorkout(workout);
   }
 }
