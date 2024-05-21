@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const WORKOUTS = {
   "MONDAY (LEGS)": [
     "Squat (17)",
@@ -20,6 +22,10 @@ const WEEKDAYS = [
 ];
 
 export const LOCAL_STORAGE_KEY = "workout";
+
+export function formatDate(when = new Date()) {
+  return moment(when).format("YYYY-MM-DD");
+}
 
 export function getWorkout(todayIndex) {
   for (let delta = 0; delta < 7; delta++) {
@@ -44,7 +50,7 @@ export function arrayRange(min, max, step) {
 }
 
 export function initWorkout(setWorkout) {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = formatDate();
   const workouts = getLocalStorage();
   const workout = workouts[today] ?? false;
 
@@ -55,7 +61,7 @@ export function initWorkout(setWorkout) {
 }
 
 export function persistWorkout(workout) {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = formatDate();
   const existing = getLocalStorage();
   const payload = { ...existing, [today]: workout }; // one workout per day
 

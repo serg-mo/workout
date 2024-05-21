@@ -1,21 +1,28 @@
 import React from "react";
 import Workout from "./Workout";
-import { LOCAL_STORAGE_KEY } from "./lib";
+import { formatDate, getLocalStorage } from "./lib";
+import Chart from "./Chart";
 
-export default function Dashboard({ currentWorkout, currentExercise }) {
+export default function Dashboard({ currentExercise }) {
   // NOTE: previous workout is only relevant for the same day of the week
-  const week = 7 * (24 * 60 * 60 * 1000); // milliseconds
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const last = new Date(new Date().getTime() - week).toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = formatDate();
+  const last = formatDate("today - 7 days");
 
-  const workouts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+  const workouts = getLocalStorage();
+
+  const currentWorkout = workouts[formatDate] ?? false;
   const previousWorkout = workouts[last] ?? false;
+  console.log({ today: formatDate, last, currentWorkout, previousWorkout });
 
   return (
     <div className="my-4 flex-grow border">
-      <div className="text-xl font-bold my-2">{currentExercise}</div>
-      <Workout workout={currentWorkout} title={`Today ${today}`} />
-      <Workout workout={previousWorkout} title={`Last (${last})`} />
+      <Chart workouts={workouts} exercise={currentExercise} />
+      {currentWorkout && (
+        <Workout workout={currentWorkout} title={`Today ${today}`} />
+      )}
+      {previousWorkout && (
+        <Workout workout={previousWorkout} title={`Last (${last})`} />
+      )}
     </div>
   );
 }

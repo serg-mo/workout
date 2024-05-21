@@ -85,6 +85,7 @@ export default function Form({
         <button
           className="bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
           onClick={undoLast}
+          disabled={!exercise}
         >
           Undo
         </button>

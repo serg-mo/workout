@@ -5,15 +5,12 @@ import Footer from "./Footer";
 import Dashboard from "./Dashboard";
 import { persistWorkout, initWorkout } from "./lib";
 
-// TODO: visualize timestamp, weight, and reps as a chart (scatter?)
-// TODO: look at timestamps to figure out the time between sets
 // TODO: reloading the page should pre-select the most recent exercise, weight, and reps
 // TODO: Two workouts show up at the same day?
 // TODO: replace dips and pullups with cable exercises
-// TODO: chart all sets of the current exercise
 // TODO: changing the exercise should affect the weight and reps
 // TODO: disable undo if there is no currentExercise or it has no existing sets
-
+// TODO: undo is a click behind
 export default function App() {
   const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
   const [workoutName, workoutExercises] = getWorkout(todayIndex);
@@ -34,10 +31,7 @@ export default function App() {
     // console.log({ exercise, weight, reps });
     setCurrentWorkout((prev) => ({
       ...prev,
-      [exercise]: [
-        ...(prev[exercise] ?? []),
-        { weight, reps, timestamp: new Date().toISOString() }, // exercise -> reps[]
-      ],
+      [exercise]: [...(prev[exercise] ?? []), { weight, reps }],
     }));
   };
 
