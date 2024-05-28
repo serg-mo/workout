@@ -1,15 +1,33 @@
 import moment from "moment";
 
-// TODO: these should have notes, muscle groups, etc
+// TODO: these should map to equipment, which maps to weights
+const LEGS = {
+  Squat: "barbell", // 17 safeguards, [quads, hams, glutes]
+  "Kettlebell Lunges": "kettlebell", // [glutes, hams, quads, calves]
+  "Cable Side Lunges": "cable", // [quads, abductors, glutes, hams]
+  "Calve Raises": "dumbbell", // [calves]
+};
+
+// push: chest, shoulders, and triceps
+const FRONT = {
+  "Bench Press": "barbell", // [pecs, delts, triceps, biceps, serratus]
+  "Overhead Press": "barbell", // [pecs, delts, triceps, traps]
+  "Cable Rows": "cable", // [lats, traps, delts, bicpes, triceps]
+  "Tricep Extensions": "cable", // [triceps]
+};
+
+// pull: back and biceps
+const BACK = {
+  Deadlift: "barbell", // [glutes, hams, core, back, traps]
+  "Kettlebell Snatch": "kettlebell", // [quads, hips, glutes, hams, core]
+  "Cable Pull Downs": "cable", // [lats, traps, biceps, core, delts, shoulders]
+  "Bicep Curls": "dumbbell", // [biceps]
+};
+
 const WORKOUTS = {
-  "MONDAY (LEGS)": [
-    "Squat (17)",
-    "Cossack squats",
-    "Leg extensions (Hold 10 sec)",
-    "Tricep cable",
-  ],
-  "WEDNESDAY (FRONT)": ["Bench Press", "Overhead Press", "Dips", "Cable rows"],
-  "FRIDAY (BACK)": ["Deadlift", "Pull-ups", "Kettlebell swings", "Bicep curls"],
+  "MONDAY (LEGS)": LEGS,
+  "WEDNESDAY (FRONT)": FRONT,
+  "FRIDAY (BACK)": BACK,
 };
 
 const WEEKDAYS = [
@@ -28,6 +46,7 @@ export function formatDate(when = new Date()) {
   return moment(when).format("YYYY-MM-DD");
 }
 
+// TODO: make this editable
 export function getTodaysWorkout(todayIndex) {
   for (let delta = 0; delta < 7; delta++) {
     const prevIndex = (7 + todayIndex - delta) % 7;
