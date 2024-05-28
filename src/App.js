@@ -12,9 +12,6 @@ import { persistWorkout, initWorkout } from "./lib";
 // TODO: disable undo if there is no exercise or it has no existing sets
 // TODO: undo is a click behind
 export default function App() {
-  const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-  const [workoutName, exercises] = getTodaysWorkout(todayIndex);
-
   const [workout, setWorkout] = useState(null);
   const [exercise, setExercise] = useState(""); // must exist outside of form
 
@@ -51,9 +48,7 @@ export default function App() {
 
   return (
     <div className="w-full h-screen flex flex-col p-2">
-      <h1 className="font-bold mb-4 text-3xl text-center">{workoutName}</h1>
       <Form
-        exercises={exercises}
         exercise={exercise}
         setExercise={setExercise}
         handleSave={handleSave}
