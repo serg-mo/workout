@@ -1,43 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { arrayRange } from "./lib";
+import { arrayRange, WORKOUTS, getTodaysWorkout } from "./lib";
 
-export default function Form({
-  exercises,
-  exercise,
-  setExercise,
-  handleSave,
-  undoLast,
-}) {
+export default function Form({ exercise, setExercise, handleSave, undoLast }) {
+  const [workout, setWorkout] = useState(getTodaysWorkout());
+  const [exercises, setExercises] = useState([]);
+
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
-
-  const kettlebellWeights = [
-    8.8, 13.2, 17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 48.4, 52.8,
-  ];
-  const cableWeights = arrayRange(30, 150, 10);
-  const barbellWeights = arrayRange(45, 225, 5);
-  const [weightOptions, setWeightOptions] = useState(barbellWeights);
+  const [weightOptions, setWeightOptions] = useState([]);
 
   const repsOptions = arrayRange(3, 20, 1);
 
   useEffect(() => {
+    setExercises(WORKOUTS[workout]);
+
+    setExercise("");
+    setWeight(0);
+    setReps(0);
+  }, [workout]);
+
+  useEffect(() => {
     if (!exercise) return;
 
-    // TODO: these should be constants
-    if (exercises[exercise] === "kettlebell") {
-      setWeightOptions(kettlebellWeights);
-    } else if (exercises[exercise] === "cable") {
-      setWeightOptions(cableWeights);
-    } else {
-      setWeightOptions(barbellWeights);
-    }
-
+    setWeightOptions(exercises[exercise]);
     setWeight(0);
     setReps(0);
   }, [exercise]);
 
   return (
     <div className="flex flex-row flex-wrap justify-between text-3xl text-center">
+      <select
+        value={workout}
+        onChange={(e) => setWorkout(e.target.value)}
+        className="appearance-none w-full my-2 p-3 leading-tight border rounded focus:outline-none"
+      >
+        <option value="" disabled>
+          Workout
+        </option>
+        {Object.keys(WORKOUTS).map((name) => (
+          <option key={name} value={name}>
+            {name}
+          </option>
+        ))}
+      </select>
+
       <select
         value={exercise}
         onChange={(e) => setExercise(e.target.value)}

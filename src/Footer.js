@@ -8,7 +8,7 @@ export default function Footer() {
     const workouts = getLocalStorage(); // date -> workout
 
     const dates = Object.keys(workouts).sort(
-      (a, b) => new Date(b) - new Date(a) // descending
+      (a, b) => new Date(b) - new Date(a), // descending
     );
 
     return dates.slice(0, N).reduce((acc, date) => {

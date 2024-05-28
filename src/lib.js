@@ -1,30 +1,35 @@
 import moment from "moment";
 
+// TODO: make every exercise have its own weight options
+const kettlebellWeights = [
+  8.8, 13.2, 17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 48.4, 52.8,
+];
+
 // TODO: these should map to equipment, which maps to weights
 const LEGS = {
-  Squat: "barbell", // 17 safeguards, [quads, hams, glutes]
-  "Kettlebell Lunges": "kettlebell", // [glutes, hams, quads, calves]
-  "Cable Side Lunges": "cable", // [quads, abductors, glutes, hams]
-  "Calve Raises": "dumbbell", // [calves]
+  Squat: arrayRange(135, 185, 5), // 17 safeguards, quads, hams, glutes
+  "Kettlebell Lunges": kettlebellWeights, // glutes, hams, quads, calves
+  "Cable Side Lunges": arrayRange(30, 50, 10), // quads, abductors, glutes, hams
+  "Calve Raises": arrayRange(30, 75, 5), // calves
 };
 
 // push: chest, shoulders, and triceps
 const FRONT = {
-  "Bench Press": "barbell", // [pecs, delts, triceps, biceps, serratus]
-  "Overhead Press": "barbell", // [pecs, delts, triceps, traps]
-  "Cable Rows": "cable", // [lats, traps, delts, bicpes, triceps]
-  "Tricep Extensions": "cable", // [triceps]
+  "Bench Press": arrayRange(135, 185, 5), // pecs, delts, triceps, biceps, serratus
+  "Overhead Press": arrayRange(45, 135, 10), // pecs, delts, triceps, traps
+  "Cable Rows": arrayRange(80, 150, 10), // lats, traps, delts, bicpes, triceps
+  "Tricep Extensions": arrayRange(20, 90, 10), // triceps
 };
 
 // pull: back and biceps
 const BACK = {
-  Deadlift: "barbell", // [glutes, hams, core, back, traps]
-  "Kettlebell Snatch": "kettlebell", // [quads, hips, glutes, hams, core]
-  "Cable Pull Downs": "cable", // [lats, traps, biceps, core, delts, shoulders]
-  "Bicep Curls": "dumbbell", // [biceps]
+  Deadlift: arrayRange(135, 285, 10), // glutes, hams, core, back, traps
+  "Kettlebell Snatch": kettlebellWeights, // quads, hips, glutes, hams, core
+  "Cable Pull Downs": arrayRange(100, 200, 10), // lats, traps, biceps, core, delts, shoulders
+  "Bicep Curls": arrayRange(20, 45, 5), // biceps
 };
 
-const WORKOUTS = {
+export const WORKOUTS = {
   "MONDAY (LEGS)": LEGS,
   "WEDNESDAY (FRONT)": FRONT,
   "FRIDAY (BACK)": BACK,
@@ -46,16 +51,14 @@ export function formatDate(when = new Date()) {
   return moment(when).format("YYYY-MM-DD");
 }
 
-// TODO: make this editable
-export function getTodaysWorkout(todayIndex) {
+export function getTodaysWorkout() {
+  const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
   for (let delta = 0; delta < 7; delta++) {
     const prevIndex = (7 + todayIndex - delta) % 7;
     const day = WEEKDAYS[prevIndex];
 
-    const entry = Object.entries(WORKOUTS).find(([key]) => key.startsWith(day));
-    if (entry) {
-      return entry;
-    }
+    return Object.keys(WORKOUTS).find((key) => key.startsWith(day)) ?? null;
   }
 
   return null;
