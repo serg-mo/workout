@@ -13,7 +13,7 @@ import { persistWorkout, initWorkout } from "./lib";
 // TODO: undo is a click behind
 export default function App() {
   const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-  const [workoutName, workoutExercises] = getTodaysWorkout(todayIndex);
+  const [workoutName, exercises] = getTodaysWorkout(todayIndex);
 
   const [workout, setWorkout] = useState(null);
   const [exercise, setExercise] = useState(""); // must exist outside of form
@@ -53,7 +53,7 @@ export default function App() {
     <div className="w-full h-screen flex flex-col p-2">
       <h1 className="font-bold mb-4 text-3xl text-center">{workoutName}</h1>
       <Form
-        exercises={workoutExercises}
+        exercises={exercises}
         exercise={exercise}
         setExercise={setExercise}
         handleSave={handleSave}

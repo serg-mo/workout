@@ -12,16 +12,26 @@ export default function Form({
   const [reps, setReps] = useState(0);
 
   const kettlebellWeights = [
-    4.4, 8.8, 13.2, 17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 48.4, 52.8,
+    8.8, 13.2, 17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 48.4, 52.8,
   ];
-  const barbellWeights = arrayRange(5, 225, 5);
-  const weightOptions = [...kettlebellWeights, ...barbellWeights].sort(
-    (a, b) => a - b // ascending
-  );
+  const cableWeights = arrayRange(30, 150, 10);
+  const barbellWeights = arrayRange(45, 225, 5);
+  const [weightOptions, setWeightOptions] = useState(barbellWeights);
+
   const repsOptions = arrayRange(3, 20, 1);
 
   useEffect(() => {
     if (!exercise) return;
+
+    // TODO: these should be constants
+    if (exercises[exercise] === "kettlebell") {
+      setWeightOptions(kettlebellWeights);
+    } else if (exercises[exercise] === "cable") {
+      setWeightOptions(cableWeights);
+    } else {
+      setWeightOptions(barbellWeights);
+    }
+
     setWeight(0);
     setReps(0);
   }, [exercise]);
@@ -36,9 +46,9 @@ export default function Form({
         <option value="" disabled>
           Exercise
         </option>
-        {exercises.map((value) => (
-          <option key={value} value={value}>
-            {value}
+        {Object.keys(exercises).map((exercise) => (
+          <option key={exercise} value={exercise}>
+            {exercise}
           </option>
         ))}
       </select>
