@@ -14,7 +14,7 @@ ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const colors = ["#0000FF", "#1E90FF", "#4169E1", "#4682B4", "#5F9EA0"];
 
-// TODO: consider bubble chart, where the size of the bubble is the third dimension
+// TODO: consider bubble chart, where the size of the bubble is the group size
 export default function Chart({ workouts, exercise }) {
   const options = {
     responsive: true,
@@ -25,22 +25,22 @@ export default function Chart({ workouts, exercise }) {
       xAxisKey: "weight",
       yAxisKey: "reps",
     },
-    // scales: {
-    //   x: {
-    //     position: "bottom",
-    //     title: {
-    //       display: true,
-    //       text: "Weight",
-    //     },
-    //   },
-    //   y: {
-    //     position: "left",
-    //     title: {
-    //       display: true,
-    //       text: "Reps",
-    //     },
-    //   },
-    // },
+    scales: {
+      x: {
+        position: "bottom",
+        title: {
+          display: true,
+          text: "Weight",
+        },
+      },
+      y: {
+        position: "left",
+        title: {
+          display: true,
+          text: "Reps",
+        },
+      },
+    },
   };
 
   const datasets = Object.entries(workouts)
