@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { getTodaysWorkout } from "./lib";
 import Form from "./Form";
 import Footer from "./Footer";
 import Dashboard from "./Dashboard";

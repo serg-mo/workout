@@ -1,15 +1,24 @@
 import React from "react";
 import Workout from "./Workout";
-import { formatDate, getLocalStorage } from "./lib";
-import Chart from "./Chart";
+import { formatDate, formatSets, getLocalStorage } from "./lib";
 
 export default function Dashboard({ workout, exercise }) {
-  // NOTE: previous workout is only relevant for the same day of the week
   const workouts = getLocalStorage();
+  const today = formatDate();
+
+  const prev = Object.entries(workouts)
+    .filter(([date, workout]) => date !== today && !!workout[exercise])
+    .map(([date, workout]) => ({ date, sets: workout[exercise] }))
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // most recent first
+
   return (
-    <div className="my-4 flex-grow">
-      <Chart workouts={workouts} exercise={exercise} />
+    <div className="my-4 flex-grow text-gray-600 text-left whitespace-pre">
       <Workout workout={workout} title="Today" />
+      <div className="">
+        {prev
+          .map(({ date, sets }) => `${date.substring(5)} : ${formatSets(sets)}`)
+          .join("\n")}
+      </div>
     </div>
   );
 }

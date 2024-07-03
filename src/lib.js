@@ -9,23 +9,23 @@ const kettlebellWeights = [
 const LEGS = {
   Squat: arrayRange(135, 185, 5), // 17 safeguards, quads, hams, glutes
   "Kettlebell Lunges": kettlebellWeights, // glutes, hams, quads, calves
-  "Cable Side Lunges": arrayRange(30, 50, 10), // quads, abductors, glutes, hams
-  "Calve Raises": arrayRange(30, 75, 5), // calves
+  "Cable Abductors": arrayRange(5, 15, 5), // quads, abductors, glutes, hams
+  Calves: arrayRange(40, 100, 5), // calves
 };
 
 // push: chest, shoulders, and triceps
 const FRONT = {
   "Bench Press": arrayRange(135, 185, 5), // pecs, delts, triceps, biceps, serratus
   "Overhead Press": arrayRange(45, 135, 10), // pecs, delts, triceps, traps
-  "Cable Rows": arrayRange(80, 150, 10), // lats, traps, delts, bicpes, triceps
-  "Tricep Extensions": arrayRange(20, 90, 10), // triceps
+  "Cable Pull Downs": arrayRange(100, 200, 10), // lats, traps, biceps, core, delts, shoulders
+  "Cable Tricep": arrayRange(20, 50, 10), // triceps
 };
 
 // pull: back and biceps
 const BACK = {
   Deadlift: arrayRange(135, 285, 10), // glutes, hams, core, back, traps
   "Kettlebell Snatch": kettlebellWeights, // quads, hips, glutes, hams, core
-  "Cable Pull Downs": arrayRange(100, 200, 10), // lats, traps, biceps, core, delts, shoulders
+  "Cable Rows": arrayRange(80, 150, 10), // lats, traps, delts, bicpes, triceps
   "Bicep Curls": arrayRange(20, 45, 5), // biceps
 };
 
@@ -52,16 +52,27 @@ export function formatDate(when = new Date()) {
 }
 
 export function getTodaysWorkout() {
-  const todayIndex = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const todayIndex = new Date().getDay(); // 0 = Sunday .. 6 = Saturday
 
   for (let delta = 0; delta < 7; delta++) {
     const prevIndex = (7 + todayIndex - delta) % 7;
     const day = WEEKDAYS[prevIndex];
 
-    return Object.keys(WORKOUTS).find((key) => key.startsWith(day)) ?? null;
+    const workout = Object.keys(WORKOUTS).find((key) => key.startsWith(day));
+    if (workout) {
+      return workout;
+    }
   }
 
   return null;
+}
+
+export function formatSets(sets) {
+  return sets.map(({ weight, reps }) => `${weight}x${reps}`).join(", ");
+}
+
+export function formatWorkout([exercise, sets]) {
+  return `${exercise}: ${formatSets(sets)}`;
 }
 
 export function arrayRange(min, max, step) {
