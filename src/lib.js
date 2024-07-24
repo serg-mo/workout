@@ -9,8 +9,7 @@ const kettlebellWeights = [
 const LEGS = {
   Squat: arrayRange(135, 185, 5), // 17 safeguards, quads, hams, glutes
   "Kettlebell Lunges": kettlebellWeights, // glutes, hams, quads, calves
-  "Cable Abductors": arrayRange(5, 15, 5), // quads, abductors, glutes, hams
-  Calves: arrayRange(40, 100, 5), // calves
+  Calves: arrayRange(200, 250, 5), // calves
 };
 
 // push: chest, shoulders, and triceps
@@ -18,7 +17,7 @@ const FRONT = {
   "Bench Press": arrayRange(135, 185, 5), // pecs, delts, triceps, biceps, serratus
   "Overhead Press": arrayRange(45, 135, 10), // pecs, delts, triceps, traps
   "Cable Pull Downs": arrayRange(100, 200, 10), // lats, traps, biceps, core, delts, shoulders
-  "Cable Tricep": arrayRange(20, 50, 10), // triceps
+  "Bicep Curls": arrayRange(20, 45, 5), // biceps
 };
 
 // pull: back and biceps
@@ -26,7 +25,7 @@ const BACK = {
   Deadlift: arrayRange(135, 285, 10), // glutes, hams, core, back, traps
   "Kettlebell Snatch": kettlebellWeights, // quads, hips, glutes, hams, core
   "Cable Rows": arrayRange(80, 150, 10), // lats, traps, delts, bicpes, triceps
-  "Bicep Curls": arrayRange(20, 45, 5), // biceps
+  "Cable Tricep": arrayRange(20, 50, 10), // triceps
 };
 
 export const WORKOUTS = {
