@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Form from "./Form";
-import Footer from "./Footer";
-import Dashboard from "./Dashboard";
-import { persistWorkout, initWorkout } from "./lib";
+import React, { useEffect, useState } from "react";
+import Dashboard from "./components/Dashboard";
+import Footer from "./components/Footer";
+import Form from "./components/Form";
+import { initWorkout, persistWorkout } from "./lib";
 
 // TODO: reloading the page should pre-select the most recent exercise, weight, and reps
-// TODO: Two workouts show up at the same day?
-// TODO: replace dips and pullups with cable exercises
 // TODO: changing the exercise should affect the weight and reps
 // TODO: disable undo if there is no exercise or it has no existing sets
 // TODO: undo is a click behind
@@ -46,7 +44,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col p-2">
+    <div className="w-full h-dvh flex flex-col p-2">
       <Form
         exercise={exercise}
         setExercise={setExercise}

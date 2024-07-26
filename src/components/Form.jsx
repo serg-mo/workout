@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { arrayRange, WORKOUTS, getTodaysWorkout } from "./lib";
+import React, { useEffect, useState } from "react";
+import { arrayRange, getTodaysWorkout, WORKOUTS } from "../lib";
 
 export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [workout, setWorkout] = useState(getTodaysWorkout());
@@ -28,11 +28,11 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   }, [exercise]);
 
   return (
-    <div className="flex flex-row flex-wrap justify-between text-3xl text-center">
+    <div className="flex flex-row flex-wrap gap-2 justify-between text-3xl text-center">
       <select
         value={workout}
         onChange={(e) => setWorkout(e.target.value)}
-        className="appearance-none w-full my-2 p-3 leading-tight border rounded focus:outline-none"
+        className="appearance-none w-full p-3 leading-tight border rounded focus:outline-none"
       >
         <option value="" disabled>
           Workout
@@ -47,7 +47,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
       <select
         value={exercise}
         onChange={(e) => setExercise(e.target.value)}
-        className="appearance-none w-full my-2 p-3 leading-tight border rounded focus:outline-none"
+        className="appearance-none w-full p-3 leading-tight border rounded focus:outline-none"
       >
         <option value="" disabled>
           Exercise
@@ -62,7 +62,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
       <select
         value={weight}
         onChange={(e) => setWeight(e.target.value)}
-        className="grow appearance-none mr-1 p-3 border rounded focus:outline-none"
+        className="grow appearance-none p-3 border rounded focus:outline-none"
       >
         <option value={0} disabled>
           Weight
@@ -77,7 +77,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
       <select
         value={reps}
         onChange={(e) => setReps(e.target.value)}
-        className="grow appearance-none ml-1 p-3 border rounded focus:outline-none"
+        className="grow appearance-none p-3 border rounded focus:outline-none"
       >
         <option value={0} disabled>
           Reps
@@ -89,7 +89,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
         ))}
       </select>
 
-      <div className="flex flex-row w-full mt-2 space-x-2">
+      <div className="flex flex-row w-full space-x-2">
         <button
           className="grow bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
           onClick={() => handleSave(exercise, weight, reps)}

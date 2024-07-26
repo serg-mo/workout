@@ -1,5 +1,5 @@
 import React from "react";
-import { formatWorkout } from "./lib";
+import { formatWorkout } from "../lib";
 
 // workout is multiples exercises => sets
 export default function Workout({ title, workout }) {

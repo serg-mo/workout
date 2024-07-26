@@ -5,9 +5,8 @@ const kettlebellWeights = [
   8.8, 13.2, 17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 48.4, 52.8,
 ];
 
-// TODO: these should map to equipment, which maps to weights
 const LEGS = {
-  Squat: arrayRange(135, 185, 5), // 17 safeguards, quads, hams, glutes
+  Squat: arrayRange(135, 185, 5), // quads, hams, glutes
   "Kettlebell Lunges": kettlebellWeights, // glutes, hams, quads, calves
   Calves: arrayRange(200, 250, 5), // calves
 };
@@ -16,15 +15,15 @@ const LEGS = {
 const FRONT = {
   "Bench Press": arrayRange(135, 185, 5), // pecs, delts, triceps, biceps, serratus
   "Overhead Press": arrayRange(45, 135, 10), // pecs, delts, triceps, traps
-  "Cable Pull Downs": arrayRange(100, 200, 10), // lats, traps, biceps, core, delts, shoulders
   "Bicep Curls": arrayRange(20, 45, 5), // biceps
+  Abs: arrayRange(200, 250, 5),
 };
 
 // pull: back and biceps
 const BACK = {
   Deadlift: arrayRange(135, 285, 10), // glutes, hams, core, back, traps
-  "Kettlebell Snatch": kettlebellWeights, // quads, hips, glutes, hams, core
   "Cable Rows": arrayRange(80, 150, 10), // lats, traps, delts, bicpes, triceps
+  "Cable Pull Downs": arrayRange(100, 200, 10), // lats, traps, biceps, core, delts, shoulders
   "Cable Tricep": arrayRange(20, 50, 10), // triceps
 };
 
@@ -85,8 +84,9 @@ export function arrayRange(min, max, step) {
 export function initWorkout(setWorkout) {
   const today = formatDate();
   const workouts = getLocalStorage();
-  const workout = workouts[today] ?? false;
+  const workout = workouts?.[today];
 
+  // load today's saved workout after page refresh, if available
   if (workout) {
     setWorkout(workout);
   }
@@ -95,7 +95,9 @@ export function initWorkout(setWorkout) {
 export function persistWorkout(workout) {
   const today = formatDate();
   const existing = getLocalStorage();
-  const payload = { ...existing, [today]: workout }; // one workout per day
+
+  // NOTE: one workout per day
+  const payload = { ...existing, [today]: workout };
 
   //console.log("Persisting workout", payload);
   setLocalStorage(payload);
