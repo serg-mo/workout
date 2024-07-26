@@ -97,6 +97,7 @@ export function persistWorkout(workout) {
   const existing = getLocalStorage();
 
   // NOTE: one workout per day
+  // TODO: sort by date here
   const payload = { ...existing, [today]: workout };
 
   //console.log("Persisting workout", payload);

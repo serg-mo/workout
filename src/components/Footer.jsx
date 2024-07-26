@@ -8,8 +8,13 @@ export default function Footer() {
     const size = 1 * 3; // this many workouts/dates
 
     const workouts = getLocalStorage(); // date -> workout
-    const dates = Object.keys(workouts).sort((a, b) => new Date(b) - new Date(a)); // descending
-    const recent = dates.slice(0, size).reduce((acc, date) => { acc[date] = workouts[date]; return acc; }, {});
+    const dates = Object.keys(workouts).sort(
+      (a, b) => new Date(b) - new Date(a),
+    );
+    const recent = dates.slice(0, size).reduce((acc, date) => {
+      acc[date] = workouts[date];
+      return acc;
+    }, {});
 
     const json = encodeURIComponent(JSON.stringify(recent, null, 0)); // replacer, spaces
     setMailto(`mailto:?subject=Workout&body=${json}`);
@@ -32,7 +37,7 @@ export default function Footer() {
 
   return (
     <footer className="mt-auto">
-      <div className="flex flex-row justify-between text-xs">
+      <div className="flex flex-row justify-between">
         <a onClick={onImport}>Import</a>
         <a onClick={onReset}>Reset</a>
         <a href={mailto}>Export</a>

@@ -17,7 +17,7 @@ export default function Dashboard({ workout, exercise }) {
 
   // TODO: change the sets shape
   return (
-    <div className="my-4 flex-grow text-gray-600 text-left whitespace-pre">
+    <div className="my-4 flex-grow text-lg text-gray-600 text-left whitespace-pre">
       {workout?.[exercise] && <Sets title="Today" sets={workout[exercise]} />}
       {prev.length &&
         prev.map(({ date, sets }, index) => (

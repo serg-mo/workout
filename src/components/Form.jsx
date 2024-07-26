@@ -12,17 +12,16 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const repsOptions = arrayRange(3, 20, 1);
 
   useEffect(() => {
-    setExercises(WORKOUTS[workout]);
-
-    setExercise("");
-    setWeight(0);
-    setReps(0);
+    setExercises(WORKOUTS[workout]); // exercise name => [weight options]
+    setExercise(Object.keys(WORKOUTS[workout])[0]); // first exercise in a workout
   }, [workout]);
 
   useEffect(() => {
     if (!exercise) return;
 
     setWeightOptions(exercises[exercise]);
+
+    // TODO: pre-select most recent set
     setWeight(0);
     setReps(0);
   }, [exercise]);
