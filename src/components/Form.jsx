@@ -1,5 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { arrayRange, getTodaysWorkout, WORKOUTS } from "../lib";
+import {
+  arrayRange,
+  getLocalStorage,
+} from "../lib";
+import {
+  WORKOUTS,
+} from "../sergey";
+
+function getTodaysWorkout() {
+  const WEEKDAYS = [
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+  ];
+
+  const todayIndex = new Date().getDay(); // 0 = Sunday .. 6 = Saturday
+
+  for (let delta = 0; delta < 7; delta++) {
+    const prevIndex = (7 + todayIndex - delta) % 7;
+    const day = WEEKDAYS[prevIndex];
+
+    const workout = Object.keys(WORKOUTS).find((key) => key.startsWith(day));
+    if (workout) {
+      return workout;
+    }
+  }
+
+  return null;
+}
+
 
 export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [workout, setWorkout] = useState(getTodaysWorkout());
@@ -8,8 +41,9 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
   const [weightOptions, setWeightOptions] = useState([]);
+  const [repsOptions, setRepsOptions] = useState([]);
 
-  const repsOptions = arrayRange(3, 20, 1);
+  const history = getLocalStorage();
 
   useEffect(() => {
     setExercises(WORKOUTS[workout]); // exercise name => [weight options]
@@ -19,11 +53,28 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   useEffect(() => {
     if (!exercise) return;
 
-    setWeightOptions(exercises[exercise]);
+    const prev = Object.entries(history)
+      .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+      .find(([date, workout]) => !!workout[exercise]);
 
-    // TODO: pre-select most recent set
-    setWeight(0);
-    setReps(0);
+    if (prev) {
+      const sets = prev[1][exercise];
+      const firstSet = sets[0];
+
+      setWeightOptions(exercises[exercise]);
+      setRepsOptions(arrayRange(3, 20, 1));
+
+      // manual weight options work just fine
+
+      setWeight(firstSet.weight);
+      setReps(firstSet.reps);
+    } else {
+      setWeightOptions(exercises[exercise]);
+      setRepsOptions(arrayRange(3, 20, 1));
+
+      setWeight(0);
+      setReps(0);
+    }
   }, [exercise]);
 
   return (
