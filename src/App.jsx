@@ -4,10 +4,7 @@ import Footer from "./components/Footer";
 import Form from "./components/Form";
 import { initWorkout, persistWorkout } from "./lib";
 
-// TODO: reloading the page should pre-select the most recent exercise, weight, and reps
-// TODO: changing the exercise should affect the weight and reps
-// TODO: disable undo if there is no exercise or it has no existing sets
-// TODO: undo is a click behind
+// TODO: once every exercise has 3 sets, show a workout summary
 export default function App() {
   const [workout, setWorkout] = useState(null);
   const [exercise, setExercise] = useState(""); // must exist outside of form
