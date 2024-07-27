@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  arrayRange,
-  getLocalStorage,
-} from "../lib";
-import {
-  WORKOUTS,
-} from "../sergey";
+import { arrayRange, getLocalStorage } from "../lib";
+import { WORKOUTS } from "../sergey";
 
 function getTodaysWorkout() {
   const WEEKDAYS = [
@@ -32,7 +27,6 @@ function getTodaysWorkout() {
 
   return null;
 }
-
 
 export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [workout, setWorkout] = useState(getTodaysWorkout());
@@ -76,6 +70,20 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
       setReps(0);
     }
   }, [exercise]);
+
+  // TODO: make another version where this is at least 15 total reps
+  // compare "exercises" here against "workout" in App
+  // const isFinished = () => {
+  //   if (!workout) {
+  //     return false;
+  //   }
+
+  //   console.log(workout)
+  //   const minSets = 3;
+
+  //   // workout tracks my logged progress vs exercise options
+  //   // return Object.values(workout).every(sets => Array.isArray(sets) && sets.length >= minSets);
+  // }
 
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-between text-3xl text-center">
