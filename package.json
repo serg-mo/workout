@@ -27,7 +27,8 @@
   },
   "scripts": {
     "start": "webpack serve --mode development --open --hot",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "lint": "prettier . --write"
   },
   "eslintConfig": {
     "extends": [

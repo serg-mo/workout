@@ -5,19 +5,24 @@ export default function Footer() {
   const [mailto, setMailto] = useState("");
 
   useEffect(() => {
-    const size = 1 * 3; // this many workouts/dates
+    const workouts = getLocalStorage(4 * 3); // one month is 4 weeks at 3 workouts/week
 
-    const workouts = getLocalStorage(); // date -> workout
-    const dates = Object.keys(workouts).sort(
-      (a, b) => new Date(b) - new Date(a),
-    );
-    const recent = dates.slice(0, size).reduce((acc, date) => {
-      acc[date] = workouts[date];
+    const setReducer = (acc, [exercise, sets]) => {
+      acc[exercise] = sets.map(({ weight, reps }) => `${weight}x${reps}`);
       return acc;
-    }, {});
+    };
 
-    const json = encodeURIComponent(JSON.stringify(recent, null, 0)); // replacer, spaces
-    setMailto(`mailto:?subject=Workout&body=${json}`);
+    const workoutReducer = (acc, [date, exercises]) => {
+      acc[date] = Object.entries(exercises).reduce(setReducer, {});
+      return acc;
+    };
+
+    const data = Object.entries(workouts).reduce(workoutReducer, {});
+    const json = JSON.stringify(data, null, 0); // replacer, spaces
+    console.log(`JSON export length ${json.length} vs 2083 max`);
+
+    // NOTE: Chrome only accepts links of 2083 characters or less
+    setMailto(`mailto:?subject=Workout&body=${encodeURIComponent(json)}`);
   }, []);
 
   const onImport = () => {
