@@ -37,7 +37,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [weightOptions, setWeightOptions] = useState([]);
   const [repsOptions, setRepsOptions] = useState([]);
 
-  const history = getLocalStorage();
+  const history = getLocalStorage(); // most recent first
 
   useEffect(() => {
     setExercises(WORKOUTS[workout]); // exercise name => [weight options]
@@ -47,12 +47,13 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   useEffect(() => {
     if (!exercise) return;
 
-    const prev = Object.entries(history)
-      .sort((a, b) => new Date(b[0]) - new Date(a[0]))
-      .find(([date, workout]) => !!workout[exercise]);
+    const prev = Object.entries(history).find(
+      ([date, workout]) => !!workout[exercise],
+    );
 
     if (prev) {
       const sets = prev[1][exercise];
+      // TODO: change this based on the current set
       const firstSet = sets[0];
 
       setWeightOptions(exercises[exercise]);

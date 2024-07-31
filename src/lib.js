@@ -53,8 +53,22 @@ export function eraseLocalStorage() {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
 }
 
-export function getLocalStorage() {
-  return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+export function getLocalStorage(size = 0) {
+  const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+  const entries = Object.entries(data); // [date, workouts][]
+
+  // TODO: consider sorting on export, not read
+  entries.sort((a, b) => {
+    const dateA = new Date(a[0]);
+    const dateB = new Date(b[0]);
+    return dateB - dateA; // most recent first
+  });
+
+  if (size) {
+    return Object.fromEntries(entries.slice(0, size));
+  }
+
+  return Object.fromEntries(entries);
 }
 
 export function computeMinMax(arr, prop) {

@@ -7,13 +7,12 @@ export default function Dashboard({ workout, exercise }) {
     return;
   }
 
-  const workouts = getLocalStorage();
+  const workouts = getLocalStorage(); // most recent first
   const today = formatDate();
 
   const prev = Object.entries(workouts)
     .filter(([date, workout]) => date !== today && !!workout[exercise])
-    .map(([date, workout]) => ({ date, sets: workout[exercise] }))
-    .sort((a, b) => new Date(b.date) - new Date(a.date)); // most recent first
+    .map(([date, workout]) => ({ date, sets: workout[exercise] }));
 
   // TODO: change the sets shape
   return (
