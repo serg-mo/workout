@@ -1,8 +1,6 @@
-# Workout
+[Workout](https://serg-mo.github.io/workout/)
 
-[Production](https://serg-mo.github.io/workout/)
+### NOTES
 
-# NOTES
-
-TODO: add `npm run lint` + `npm run build` before `git push`
-TODO: The first screen should be a calendar view with my workout days highlighted, just 4 weeks worth
+TODO: add `npm run lint` before `git push`
+TODO: add a way to edit the workouts and that's v1

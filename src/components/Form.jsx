@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { arrayRange, getLocalStorage } from "../lib";
-import { WORKOUTS } from "../sergey";
 
-function getTodaysWorkout() {
-  const WEEKDAYS = [
-    "SUNDAY",
-    "MONDAY",
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
-    "FRIDAY",
-    "SATURDAY",
-  ];
-
-  const todayIndex = new Date().getDay(); // 0 = Sunday .. 6 = Saturday
-
-  for (let delta = 0; delta < 7; delta++) {
-    const prevIndex = (7 + todayIndex - delta) % 7;
-    const day = WEEKDAYS[prevIndex];
-
-    const workout = Object.keys(WORKOUTS).find((key) => key.startsWith(day));
-    if (workout) {
-      return workout;
-    }
-  }
-
-  return null;
-}
+const WEEKDAYS = [
+  "SUNDAY",
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+];
 
 export default function Form({ exercise, setExercise, handleSave, undoLast }) {
-  const [workout, setWorkout] = useState(getTodaysWorkout());
+  const { workouts, history } = getLocalStorage(); // most recent first
+
+  // TODO: refactor this
+  function getTodaysWorkoutName() {
+    const todayIndex = new Date().getDay(); // 0 = Sunday .. 6 = Saturday
+
+    for (let delta = 0; delta < 7; delta++) {
+      const prevIndex = (7 + todayIndex - delta) % 7;
+      const day = WEEKDAYS[prevIndex];
+
+      const workout = Object.keys(workouts).find((key) => key.startsWith(day));
+      if (workout) {
+        return workout;
+      }
+    }
+
+    return ""; // select below does not like null as a value
+  }
+
+  const [workout, setWorkout] = useState(getTodaysWorkoutName());
   const [exercises, setExercises] = useState([]);
 
   const [weight, setWeight] = useState(0);
@@ -37,11 +39,13 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [weightOptions, setWeightOptions] = useState([]);
   const [repsOptions, setRepsOptions] = useState([]);
 
-  const history = getLocalStorage(); // most recent first
-
   useEffect(() => {
-    setExercises(WORKOUTS[workout]); // exercise name => [weight options]
-    setExercise(Object.keys(WORKOUTS[workout])[0]); // first exercise in a workout
+    if (!workout) {
+      return;
+    }
+
+    setExercises(workouts[workout]); // exercise name => [weight options]
+    setExercise(Object.keys(workouts[workout])[0]); // first exercise in a workout
   }, [workout]);
 
   useEffect(() => {
@@ -96,7 +100,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
         <option value="" disabled>
           Workout
         </option>
-        {Object.keys(WORKOUTS).map((name) => (
+        {Object.keys(workouts).map((name) => (
           <option key={name} value={name}>
             {name}
           </option>

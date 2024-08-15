@@ -6,6 +6,7 @@ export function formatDate(when = new Date()) {
   return moment(when).format("YYYY-MM-DD");
 }
 
+// TODO: consider just having an array of numbers that I parse in pairs (to save space)
 export function formatSets(sets) {
   return sets.map(({ weight, reps }) => `${weight}x${reps}`).join(", ");
 }
@@ -22,30 +23,8 @@ export function arrayRange(min, max, step) {
   return array;
 }
 
-export function initWorkout(setWorkout) {
-  const today = formatDate();
-  const workouts = getLocalStorage();
-  const workout = workouts?.[today];
-
-  // load today's saved workout after page refresh, if available
-  if (workout) {
-    setWorkout(workout);
-  }
-}
-
-export function persistWorkout(workout) {
-  const today = formatDate();
-  const existing = getLocalStorage();
-
-  // NOTE: one workout per day
-  // TODO: sort by date here
-  const payload = { ...existing, [today]: workout };
-
-  //console.log("Persisting workout", payload);
-  setLocalStorage(payload);
-}
-
 export function setLocalStorage(payload) {
+  // TODO: if (!payload || !("workouts" in payload) || !("history" in payload)) {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
 }
 
@@ -54,8 +33,14 @@ export function eraseLocalStorage() {
 }
 
 export function getLocalStorage(size = 0) {
-  const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-  const entries = Object.entries(data); // [date, workouts][]
+  const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+
+  if (!data || !("workouts" in data) || !("history" in data)) {
+    return { workouts: {}, history: {} };
+  }
+
+  const { workouts, history } = data;
+  const entries = Object.entries(history); // [date, workouts][]
 
   // TODO: consider sorting on export, not read
   entries.sort((a, b) => {
@@ -64,11 +49,10 @@ export function getLocalStorage(size = 0) {
     return dateB - dateA; // most recent first
   });
 
-  if (size) {
-    return Object.fromEntries(entries.slice(0, size));
-  }
-
-  return Object.fromEntries(entries);
+  return {
+    workouts,
+    history: Object.fromEntries(entries.slice(0, size || entries.length)),
+  };
 }
 
 export function computeMinMax(arr, prop) {

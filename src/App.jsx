@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import Footer from "./components/Footer";
 import Form from "./components/Form";
-import { initWorkout, persistWorkout } from "./lib";
+import { formatDate, getLocalStorage, setLocalStorage } from "./lib";
 
 // TODO: once every exercise has 3 sets, show a workout summary
 export default function App() {
@@ -10,18 +10,31 @@ export default function App() {
   const [exercise, setExercise] = useState(""); // must exist outside of form
 
   useEffect(() => {
+    const today = formatDate();
+    const { workouts, history } = getLocalStorage();
     if (workout === null) {
-      initWorkout(setWorkout);
+      // load today's saved workout after page refresh, if available
+      if (workouts?.[today]) {
+        setWorkout(workouts[today]);
+      }
     } else {
+      // TODO: sort by date here
+
       // if the current workout has changed, but it's not empty
-      persistWorkout(workout);
+      //console.log("Persisting workout", workout);
+
+      // NOTE: one workout per day
+      setLocalStorage({
+        workouts,
+        history: { ...history, [today]: workout },
+      });
     }
   }, [workout]);
 
   const handleSave = (exercise, weight, reps) => {
     setWorkout((prev) => ({
       ...prev,
-      [exercise]: [...(prev?.[exercise] ?? []), { weight, reps }],
+      [exercise]: [...(prev?.[exercise] ?? []), `${weight}x${reps}`],
     }));
   };
 
