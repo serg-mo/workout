@@ -7,12 +7,18 @@ export function formatDate(when = new Date()) {
 }
 
 // TODO: consider just having an array of numbers that I parse in pairs (to save space)
-export function formatSets(sets) {
-  return sets.map(({ weight, reps }) => `${weight}x${reps}`).join(", ");
+
+export function parseSet(str) {
+  const [weight, reps] = str.split("x");
+  return { weight, reps };
+}
+
+export function formatSet({ weight, reps }) {
+  return `${weight}x${reps}`;
 }
 
 export function formatWorkout([exercise, sets]) {
-  return `${exercise}: ${formatSets(sets)}`;
+  return `${exercise}: ${sets.map(formatSet).join(", ")}`;
 }
 
 export function arrayRange(min, max, step) {
@@ -53,21 +59,4 @@ export function getLocalStorage(size = 0) {
     workouts,
     history: Object.fromEntries(entries.slice(0, size || entries.length)),
   };
-}
-
-export function computeMinMax(arr, prop) {
-  const values = arr.map((item) => Number(item[prop]));
-
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-
-  return { min, max };
-}
-
-export function filterArrayByRange(arr, { min, max }, jitter = 0) {
-  const newMin = jitter ? min * (1 - jitter) : min;
-  const newMax = jitter ? max * (1 + jitter) : max;
-
-  console.log({ min, newMin, max, newMax, jitter });
-  return arr.filter((value) => value >= newMin && value <= newMax);
 }

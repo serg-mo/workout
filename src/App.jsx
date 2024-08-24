@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import Footer from "./components/Footer";
 import Form from "./components/Form";
-import { formatDate, getLocalStorage, setLocalStorage } from "./lib";
+import { formatDate, formatSet, getLocalStorage, setLocalStorage } from "./lib";
 
-// TODO: once every exercise has 3 sets, show a workout summary
 export default function App() {
   const [workout, setWorkout] = useState(null);
   const [exercise, setExercise] = useState(""); // must exist outside of form
@@ -14,8 +13,8 @@ export default function App() {
     const { workouts, history } = getLocalStorage();
     if (workout === null) {
       // load today's saved workout after page refresh, if available
-      if (workouts?.[today]) {
-        setWorkout(workouts[today]);
+      if (history?.[today]) {
+        setWorkout(history[today]);
       }
     } else {
       // TODO: sort by date here
@@ -34,12 +33,15 @@ export default function App() {
   const handleSave = (exercise, weight, reps) => {
     setWorkout((prev) => ({
       ...prev,
-      [exercise]: [...(prev?.[exercise] ?? []), `${weight}x${reps}`],
+      [exercise]: [...(prev?.[exercise] ?? []), formatSet({ weight, reps })],
     }));
   };
 
   const undoLast = () => {
     if (!exercise) return;
+
+    // TODO: this fails when the exercise is selected but there are no sets
+
     setWorkout((prev) => {
       const sets = [...(prev[exercise] ?? [])];
       sets.pop(); // remove the most recent set

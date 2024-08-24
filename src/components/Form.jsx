@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { arrayRange, getLocalStorage } from "../lib";
+import { arrayRange, formatDate, getLocalStorage, parseSet } from "../lib";
 
 const WEEKDAYS = [
   "SUNDAY",
@@ -14,24 +14,7 @@ const WEEKDAYS = [
 export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const { workouts, history } = getLocalStorage(); // most recent first
 
-  // TODO: refactor this
-  function getTodaysWorkoutName() {
-    const todayIndex = new Date().getDay(); // 0 = Sunday .. 6 = Saturday
-
-    for (let delta = 0; delta < 7; delta++) {
-      const prevIndex = (7 + todayIndex - delta) % 7;
-      const day = WEEKDAYS[prevIndex];
-
-      const workout = Object.keys(workouts).find((key) => key.startsWith(day));
-      if (workout) {
-        return workout;
-      }
-    }
-
-    return ""; // select below does not like null as a value
-  }
-
-  const [workout, setWorkout] = useState(getTodaysWorkoutName());
+  const [workout, setWorkout] = useState("");
   const [exercises, setExercises] = useState([]);
 
   const [weight, setWeight] = useState(0);
@@ -51,26 +34,32 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   useEffect(() => {
     if (!exercise) return;
 
-    const prev = Object.entries(history).find(
-      ([date, workout]) => !!workout[exercise],
-    );
+    // manual weight options and hardcoded rep options work just fine
+    setWeightOptions(exercises[exercise]);
+    setRepsOptions(arrayRange(3, 20, 1));
+
+    // last workout that containes this exercise
+    // TODO: make sure date is not today
+    const today = formatDate();
+    const historyEntries = Object.entries(history); // [date, workout]
+
+    // NOTE: find is not guaranteed to find anything and decomposition requires an array
+    const [, curr] = historyEntries.find(([date]) => date == today) || [];
+    const [, prev] = historyEntries.find(([date, workout]) => date != today && !!workout[exercise]) || [];
+
+    // TODO: still having trouble reading the current workout, consider doing context instead
+    const setIndex = !!curr?.[exercise]
+      ? Math.max(curr[exercise].length - 1, 0)
+      : 0; // 0 or 1 set point to the same
+    console.log(`setIndex`, setIndex);
+    console.log(`Current`, curr?.[exercise]);
+    console.log(`Previous`, prev?.[exercise]);
 
     if (prev) {
-      const sets = prev[1][exercise];
-      // TODO: change this based on the current set
-      const firstSet = sets[0];
-
-      setWeightOptions(exercises[exercise]);
-      setRepsOptions(arrayRange(3, 20, 1));
-
-      // manual weight options work just fine
-
-      setWeight(firstSet.weight);
-      setReps(firstSet.reps);
+      const activeSet = parseSet(prev[exercise][setIndex]); // 1 because it's
+      setWeight(activeSet.weight);
+      setReps(activeSet.reps);
     } else {
-      setWeightOptions(exercises[exercise]);
-      setRepsOptions(arrayRange(3, 20, 1));
-
       setWeight(0);
       setReps(0);
     }
@@ -156,7 +145,7 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
         <button
           className="grow bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
           onClick={() => handleSave(exercise, weight, reps)}
-          disabled={!exercise || !weight || !reps}
+          disabled={!exercise || !reps}
         >
           Save
         </button>

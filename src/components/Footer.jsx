@@ -19,11 +19,11 @@ export default function Footer() {
 
   useEffect(() => {
     // NOTE: github action writes to this file
-    fetch('version.txt').then(response => {
+    fetch("version.txt").then((response) => {
       if (response.ok) {
-        response.text().then(setVersion)
+        response.text().then(setVersion);
       }
-    })
+    });
   }, []);
 
   const onImport = () => {
