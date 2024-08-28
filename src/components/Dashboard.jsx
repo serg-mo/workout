@@ -1,6 +1,6 @@
-import React from "react";
-import { formatDate, getLocalStorage } from "../lib";
-import Sets from "./Sets";
+import React from 'react';
+import { formatDate, getLocalStorage } from '../lib';
+import Sets from './Sets';
 
 export default function Dashboard({ workout, exercise }) {
   if (!exercise) {
@@ -20,9 +20,7 @@ export default function Dashboard({ workout, exercise }) {
     <div className="my-4 flex-grow text-lg text-gray-600 text-left whitespace-pre">
       {workout?.[exercise] && <Sets sets={workout[exercise]} />}
       {prev.length > 0 &&
-        prev.map(({ date, sets }, index) => (
-          <Sets date={date} sets={sets} key={index} />
-        ))}
+        prev.map(({ date, sets }, index) => <Sets date={date} sets={sets} key={index} />)}
     </div>
   );
 }

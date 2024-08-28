@@ -1,24 +1,20 @@
-import moment from "moment";
+import moment from 'moment';
 
-export const LOCAL_STORAGE_KEY = "workout";
+export const LOCAL_STORAGE_KEY = 'workout';
 
 export function formatDate(when = new Date()) {
-  return moment(when).format("YYYY-MM-DD");
+  return moment(when).format('YYYY-MM-DD');
 }
 
 // TODO: consider just having an array of numbers that I parse in pairs (to save space)
 
 export function parseSet(str) {
-  const [weight, reps] = str.split("x");
-  return { weight, reps };
+  const [weight, reps] = str.split('x');
+  return { weight: parseFloat(weight), reps: parseInt(reps) };
 }
 
 export function formatSet({ weight, reps }) {
   return `${weight}x${reps}`;
-}
-
-export function formatWorkout([exercise, sets]) {
-  return `${exercise}: ${sets.map(formatSet).join(", ")}`;
 }
 
 export function arrayRange(min, max, step) {
@@ -41,7 +37,7 @@ export function eraseLocalStorage() {
 export function getLocalStorage(size = 0) {
   const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 
-  if (!data || !("workouts" in data) || !("history" in data)) {
+  if (!data || !('workouts' in data) || !('history' in data)) {
     return { workouts: {}, history: {} };
   }
 

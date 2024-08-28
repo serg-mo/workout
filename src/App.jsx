@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import Dashboard from "./components/Dashboard";
-import Footer from "./components/Footer";
-import Form from "./components/Form";
-import { formatDate, formatSet, getLocalStorage, setLocalStorage } from "./lib";
+import React, { useEffect, useState } from 'react';
+import Dashboard from './components/Dashboard';
+import Footer from './components/Footer';
+import Form from './components/Form';
+import { formatDate, formatSet, getLocalStorage, setLocalStorage } from './lib';
 
 export default function App() {
   const [workout, setWorkout] = useState(null);
-  const [exercise, setExercise] = useState(""); // must exist outside of form
+  const [exercise, setExercise] = useState(''); // must exist outside of form
 
   useEffect(() => {
     const today = formatDate();
@@ -55,9 +55,11 @@ export default function App() {
     });
   };
 
+  // TODO: all of these form props can go into a context
   return (
     <div className="w-full h-dvh flex flex-col p-2">
       <Form
+        workout={workout}
         exercise={exercise}
         setExercise={setExercise}
         handleSave={handleSave}

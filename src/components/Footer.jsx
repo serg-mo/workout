@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { getLocalStorage, setLocalStorage } from "../lib";
+import React, { useEffect, useState } from 'react';
+import { getLocalStorage, setLocalStorage } from '../lib';
 
 export default function Footer() {
-  const [mailto, setMailto] = useState("");
-  const [version, setVersion] = useState("");
+  const [mailto, setMailto] = useState('');
+  const [version, setVersion] = useState('');
 
   useEffect(() => {
     // TODO: consider using a hash of an exercise name instead of the full name (to save space)
@@ -19,7 +19,7 @@ export default function Footer() {
 
   useEffect(() => {
     // NOTE: github action writes to this file
-    fetch("version.txt").then((response) => {
+    fetch('version.txt').then((response) => {
       if (response.ok) {
         response.text().then(setVersion);
       }
@@ -28,13 +28,13 @@ export default function Footer() {
 
   const onImport = () => {
     try {
-      const payload = JSON.parse(prompt("JSON")); // NOTE: must use double quotes
+      const payload = JSON.parse(prompt('JSON')); // NOTE: must use double quotes
       if (payload && Object.keys(payload).length) {
         setLocalStorage(payload);
-        alert("Import successful");
+        alert('Success');
       }
     } catch (err) {
-      alert("Import failed");
+      alert('Fail');
       console.error(err);
     }
   };

@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { arrayRange, formatDate, getLocalStorage, parseSet } from "../lib";
+import React, { useEffect, useState } from 'react';
+import { arrayRange, formatDate, getLocalStorage, parseSet } from '../lib';
 
-const WEEKDAYS = [
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-];
+const WEEKDAYS = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
-export default function Form({ exercise, setExercise, handleSave, undoLast }) {
+export default function Form({ workout, exercise, setExercise, handleSave, undoLast }) {
   const { workouts, history } = getLocalStorage(); // most recent first
 
-  const [workout, setWorkout] = useState("");
+  const [workoutName, setWorkoutName] = useState('');
   const [exercises, setExercises] = useState([]);
 
   const [weight, setWeight] = useState(0);
@@ -22,68 +14,61 @@ export default function Form({ exercise, setExercise, handleSave, undoLast }) {
   const [weightOptions, setWeightOptions] = useState([]);
   const [repsOptions, setRepsOptions] = useState([]);
 
+  const getPreviousWorkoutSet = (i) => {
+    const today = formatDate();
+    const [, prev] =
+      Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) ||
+      [];
+
+    if (prev?.[exercise]?.[i]) {
+      return parseSet(prev[exercise][i]);
+    }
+
+    return { weight: 0, reps: 0 };
+  };
+
+  // TODO: this could be on its own page, i.e., commit to a workout first
   useEffect(() => {
-    if (!workout) {
+    if (!workoutName) {
       return;
     }
 
-    setExercises(workouts[workout]); // exercise name => [weight options]
-    setExercise(Object.keys(workouts[workout])[0]); // first exercise in a workout
-  }, [workout]);
+    setExercises(workouts[workoutName]); // exercise => [weight options]
+    setExercise(Object.keys(workouts[workoutName])[0]); // first exercise in a workout
+  }, [workoutName]);
 
   useEffect(() => {
     if (!exercise) return;
 
-    // manual weight options and hardcoded rep options work just fine
     setWeightOptions(exercises[exercise]);
     setRepsOptions(arrayRange(3, 20, 1));
 
-    // last workout that containes this exercise
-    // TODO: make sure date is not today
-    const today = formatDate();
-    const historyEntries = Object.entries(history); // [date, workout]
-
-    // NOTE: find is not guaranteed to find anything and decomposition requires an array
-    const [, curr] = historyEntries.find(([date]) => date == today) || [];
-    const [, prev] = historyEntries.find(([date, workout]) => date != today && !!workout[exercise]) || [];
-
-    // TODO: still having trouble reading the current workout, consider doing context instead
-    const setIndex = !!curr?.[exercise]
-      ? Math.max(curr[exercise].length - 1, 0)
-      : 0; // 0 or 1 set point to the same
-    console.log(`setIndex`, setIndex);
-    console.log(`Current`, curr?.[exercise]);
-    console.log(`Previous`, prev?.[exercise]);
-
-    if (prev) {
-      const activeSet = parseSet(prev[exercise][setIndex]); // 1 because it's
-      setWeight(activeSet.weight);
-      setReps(activeSet.reps);
-    } else {
-      setWeight(0);
-      setReps(0);
+    // initialize weight/reps from the first set of the last workout that contains this exercise
+    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(0);
+    if (exercises[exercise].includes(prevWeight)) {
+      setWeight(prevWeight);
+      setReps(prevReps);
     }
   }, [exercise]);
 
-  // TODO: make another version where this is at least 15 total reps
-  // compare "exercises" here against "workout" in App
-  // const isFinished = () => {
-  //   if (!workout) {
-  //     return false;
-  //   }
+  // when we add a new set, workout changes, and we update the weight/reps for the next set
+  useEffect(() => {
+    // look ahead one set
+    const currentSetIndex = !!workout?.[exercise] ? workout[exercise].length : 0;
 
-  //   console.log(workout)
-  //   const minSets = 3;
+    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(currentSetIndex);
 
-  //   // workout tracks my logged progress vs exercise options
-  //   // return Object.values(workout).every(sets => Array.isArray(sets) && sets.length >= minSets);
-  // }
+    if (weightOptions.includes(prevWeight)) {
+      setWeight(prevWeight);
+      setReps(prevReps);
+    }
+  }, [workout]);
 
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-between text-3xl text-center">
       <select
-        value={workout}
-        onChange={(e) => setWorkout(e.target.value)}
+        value={workoutName}
+        onChange={(e) => setWorkoutName(e.target.value)}
         className="appearance-none w-full p-3 leading-tight border rounded focus:outline-none"
       >
         <option value="" disabled>
