@@ -3,12 +3,16 @@ import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Form from './components/Form';
 import Setup from './components/Setup';
+import Workouts from './components/Workouts';
 import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
-
 // TODO: if I refresh the page, I lose the workout and have to manually get back to that exercise
 export default function App() {
+  const [workoutName, setWorkoutName] = useState('');
   const [workout, setWorkout] = useState(null);
+
+  const [exercises, setExercises] = useState([]);
   const [exercise, setExercise] = useState(''); // must exist outside of form
+
   const { workouts, history } = getLocalStorage();
 
   useEffect(() => {
@@ -32,6 +36,15 @@ export default function App() {
       });
     }
   }, [workout]);
+
+  useEffect(() => {
+    if (!workoutName) {
+      return;
+    }
+
+    setExercises(workouts[workoutName]); // exercise => weight
+    setExercise(Object.keys(workouts[workoutName])[0]); // first exercise in a workout
+  }, [workoutName]);
 
   const handleSave = (exercise, weight, reps) => {
     setWorkout((prev) => ({
@@ -65,14 +78,21 @@ export default function App() {
   // TODO: all of these form props can go into a context
   return (
     <div className="w-full h-dvh flex flex-col p-2">
-      <Form
-        workout={workout}
-        exercise={exercise}
-        setExercise={setExercise}
-        handleSave={handleSave}
-        undoLast={undoLast}
-      />
-      <Dashboard workout={workout} exercise={exercise} />
+      {workoutName ? (
+        <>
+          <Form
+            workout={workout}
+            exercises={exercises}
+            exercise={exercise}
+            setExercise={setExercise}
+            handleSave={handleSave}
+            undoLast={undoLast}
+          />
+          <Dashboard workout={workout} exercise={exercise} />
+        </>
+      ) : (
+        <Workouts workouts={workouts} onSelect={setWorkoutName} />
+      )}
       <Footer />
     </div>
   );

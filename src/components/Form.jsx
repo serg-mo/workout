@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { arrayRange, formatDate, getLocalStorage, makeWeightOptions, parseSet } from '../lib';
 
-export default function Form({ workout, exercise, setExercise, handleSave, undoLast }) {
+export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
   const { workouts, history } = getLocalStorage(); // most recent first
-
-  const [workoutName, setWorkoutName] = useState('');
-  const [exercises, setExercises] = useState([]);
 
   const [weight, setWeight] = useState(0);
   const [reps, setReps] = useState(0);
@@ -24,16 +21,6 @@ export default function Form({ workout, exercise, setExercise, handleSave, undoL
 
     return { weight: 0, reps: 0 };
   };
-
-  // TODO: this could be on its own page, i.e., commit to a workout first
-  useEffect(() => {
-    if (!workoutName) {
-      return;
-    }
-
-    setExercises(workouts[workoutName]); // exercise => weight
-    setExercise(Object.keys(workouts[workoutName])[0]); // first exercise in a workout
-  }, [workoutName]);
 
   useEffect(() => {
     if (!exercise) return;
@@ -66,21 +53,6 @@ export default function Form({ workout, exercise, setExercise, handleSave, undoL
 
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-between text-3xl text-center">
-      <select
-        value={workoutName}
-        onChange={(e) => setWorkoutName(e.target.value)}
-        className="appearance-none w-full p-3 leading-tight border rounded focus:outline-none"
-      >
-        <option value="" disabled>
-          Workout
-        </option>
-        {Object.keys(workouts).map((name) => (
-          <option key={name} value={name}>
-            {name}
-          </option>
-        ))}
-      </select>
-
       <select
         value={exercise}
         onChange={(e) => setExercise(e.target.value)}
