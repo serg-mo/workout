@@ -5,6 +5,7 @@ import Form from './components/Form';
 import Setup from './components/Setup';
 import Workouts from './components/Workouts';
 import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
+
 // TODO: if I refresh the page, I lose the workout and have to manually get back to that exercise
 export default function App() {
   const [workoutName, setWorkoutName] = useState('');
@@ -22,18 +23,8 @@ export default function App() {
       // load today's saved workout after page refresh, if available
       setWorkout(history[today]);
     } else {
-      // if the current workout has changed, but it's not empty
-      console.log('Persisting workout', workout);
-
-      // const serializedWorkout = Object.fromEntries(
-      //   Object.entries(workout).map(([exercise, sets]) => [exercise, sets.join(',')])
-      // );
-
       // NOTE: one workout per day
-      setLocalStorage({
-        workouts,
-        history: formatHistory({ ...history, [today]: workout }),
-      });
+      setLocalStorage({ workouts, history: formatHistory({ ...history, [today]: workout }), });
     }
   }, [workout]);
 
@@ -47,10 +38,15 @@ export default function App() {
   }, [workoutName]);
 
   const handleSave = (exercise, weight, reps) => {
-    setWorkout((prev) => ({
-      ...prev,
-      [exercise]: [...(prev?.[exercise] ?? []), formatSet({ weight, reps })],
-    }));
+    setWorkout((prev) => {
+      const formattedSet = formatSet({ weight, reps });
+      const existingSets = prev && prev?.[exercise] ? prev[exercise] : "";
+
+      return {
+        ...prev,
+        [exercise]: existingSets ? `${existingSets},${formattedSet}` : formattedSet,
+      };
+    });
   };
 
   const undoLast = () => {
@@ -59,7 +55,7 @@ export default function App() {
     // TODO: this fails when the exercise is selected but there are no sets
 
     setWorkout((prev) => {
-      const sets = [...(prev[exercise] ?? [])];
+      const sets = prev[exercise].split(",");
       sets.pop(); // remove the most recent set
 
       if (sets.length === 0) {
@@ -67,17 +63,14 @@ export default function App() {
         return rest; // all except the empty exercise
       }
 
-      return { ...prev, [exercise]: sets };
+      return { ...prev, [exercise]: sets.join(",") };
     });
   };
-
-  if (Object.keys(workouts).length === 0) {
-    return <Setup />;
-  }
 
   // TODO: all of these form props can go into a context
   return (
     <div className="w-full h-dvh flex flex-col p-2">
+      {(Object.keys(workouts).length === 0) && <Setup />}
       {workoutName ? (
         <>
           <Form

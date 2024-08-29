@@ -45,17 +45,15 @@ export default function Setup() {
   };
 
   return (
-    <div className="p-4">
-      <form onSubmit={handleSubmit} className="w-full text-center flex flex-col gap-4">
-        <textarea
-          name="workouts"
-          placeholder={placeholder}
-          cols="30"
-          rows="10"
-          className="block m-auto font-mono text-center"
-        />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="w-full text-center flex flex-col gap-4">
+      <textarea
+        name="workouts"
+        placeholder={placeholder}
+        cols="30"
+        rows="10"
+        className="m-auto font-mono text-center focus:outline-none"
+      />
+      <button type="submit" className="bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded">Setup</button>
+    </form>
   );
 }

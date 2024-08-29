@@ -1,15 +1,17 @@
 import moment from 'moment';
 
 export const LOCAL_STORAGE_KEY = 'workout';
-const kettlebellWeights = [9, 13, 26, 35, 44, 53, 62, 70, 80];
+const kettlebellWeights = [17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 52.8, 61.6];
 
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
 }
 
-// TODO: consider just having an array of numbers that I parse in pairs (to save space)
-
 export function parseSet(str) {
+  if (!str) {
+    return { weight: 0, reps: 0 };
+  }
+
   const [weight, reps] = str.split('x');
   return { weight: parseFloat(weight), reps: parseInt(reps) };
 }

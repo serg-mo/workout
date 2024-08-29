@@ -28,7 +28,8 @@ export default function Footer() {
 
   const onImport = () => {
     try {
-      const payload = JSON.parse(prompt('JSON')); // NOTE: must use double quotes
+      const input = prompt('JSON').replace(/[\n|\r]/g, " ")
+      const payload = JSON.parse(input); // NOTE: must use double quotes
       if (payload && Object.keys(payload).length) {
         setLocalStorage(payload);
         alert('Success');
