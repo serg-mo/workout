@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { arrayRange, formatDate, getLocalStorage, makeWeightOptions, parseSet } from '../lib';
+import { arrayRange, getLocalStorage, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
 
 export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
   const { workouts, history } = getLocalStorage(); // most recent first
 
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState(undefined);
   const [reps, setReps] = useState(0);
   const [weightOptions, setWeightOptions] = useState([]);
   const [repsOptions, setRepsOptions] = useState([]);
-
-  // TODO: move this to lib
-  const getPreviousWorkoutSet = (setIndex) => {
-    const today = formatDate();
-    const [, prev] =
-      Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) ||
-      [];
-
-    const sets = prev?.[exercise] ? prev[exercise].split(",") : [];
-    // console.log({ sets, setIndex, value: sets?.[setIndex] })
-    return parseSet(sets[setIndex]);
-  };
 
   useEffect(() => {
     if (!exercise) return;
@@ -30,7 +18,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
     setRepsOptions(arrayRange(3, 20, 1));
 
     // initialize weight/reps from the first set of the last workout that contains this exercise
-    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(0);
+    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(exercise, 0);
     if (options.includes(prevWeight)) {
       setWeight(prevWeight);
       setReps(prevReps);
@@ -40,8 +28,8 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
   // when we add a new set, workout changes, and we update the weight/reps for the next set
   useEffect(() => {
     // look ahead one set
-    const sets = workout?.[exercise] ? workout[exercise].split(",") : [];
-    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(sets.length);
+    const sets = workout?.[exercise] ? workout[exercise].split(',') : [];
+    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(exercise, sets.length);
 
     if (weightOptions.includes(prevWeight)) {
       setWeight(prevWeight);
@@ -71,7 +59,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
         onChange={(e) => setWeight(e.target.value)}
         className="grow appearance-none p-3 border rounded focus:outline-none"
       >
-        <option value={0} disabled>
+        <option value={undefined} disabled>
           Weight
         </option>
         {weightOptions.map((value) => (

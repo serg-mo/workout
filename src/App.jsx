@@ -24,7 +24,7 @@ export default function App() {
       setWorkout(history[today]);
     } else {
       // NOTE: one workout per day
-      setLocalStorage({ workouts, history: formatHistory({ ...history, [today]: workout }), });
+      setLocalStorage({ workouts, history: formatHistory({ ...history, [today]: workout }) });
     }
   }, [workout]);
 
@@ -40,7 +40,7 @@ export default function App() {
   const handleSave = (exercise, weight, reps) => {
     setWorkout((prev) => {
       const formattedSet = formatSet({ weight, reps });
-      const existingSets = prev && prev?.[exercise] ? prev[exercise] : "";
+      const existingSets = prev && prev?.[exercise] ? prev[exercise] : '';
 
       return {
         ...prev,
@@ -55,7 +55,7 @@ export default function App() {
     // TODO: this fails when the exercise is selected but there are no sets
 
     setWorkout((prev) => {
-      const sets = prev?.[exercise] ? prev[exercise].split(",") : [];
+      const sets = prev?.[exercise] ? prev[exercise].split(',') : [];
       sets.pop(); // remove the most recent set
 
       if (sets.length === 0) {
@@ -63,14 +63,14 @@ export default function App() {
         return rest; // all except the empty exercise
       }
 
-      return { ...prev, [exercise]: sets.join(",") };
+      return { ...prev, [exercise]: sets.join(',') };
     });
   };
 
   // TODO: all of these form props can go into a context
   return (
     <div className="w-full h-dvh flex flex-col p-2">
-      {(Object.keys(workouts).length === 0) && <Setup />}
+      {Object.keys(workouts).length === 0 && <Setup />}
       {workoutName ? (
         <>
           <Form

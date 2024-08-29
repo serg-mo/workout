@@ -53,7 +53,12 @@ export default function Setup() {
         rows="10"
         className="m-auto font-mono text-center focus:outline-none"
       />
-      <button type="submit" className="bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded">Setup</button>
+      <button
+        type="submit"
+        className="bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+      >
+        Setup
+      </button>
     </form>
   );
 }

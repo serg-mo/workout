@@ -28,7 +28,7 @@ export default function Footer() {
 
   const onImport = () => {
     try {
-      const input = prompt('JSON').replace(/[\n|\r]/g, " ")
+      const input = prompt('JSON').replace(/[\n|\r]/g, ' ');
       const payload = JSON.parse(input); // NOTE: must use double quotes
       if (payload && Object.keys(payload).length) {
         setLocalStorage(payload);
@@ -41,11 +41,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-auto">
+    <footer className="mt-auto text-sm">
       <div className="flex flex-row justify-between">
-        <a onClick={onImport}>Import</a>
+        <a onClick={onImport}>import</a>
         <span>{version}</span>
-        <a href={mailto}>Export</a>
+        <a href={mailto}>export</a>
       </div>
     </footer>
   );

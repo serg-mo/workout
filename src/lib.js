@@ -1,11 +1,24 @@
 import moment from 'moment';
 
 export const LOCAL_STORAGE_KEY = 'workout';
-const kettlebellWeights = [17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 52.8, 61.6];
+const KETTLEBELL_WEIGHTS = [17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 52.8, 61.6];
 
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
 }
+
+export function getPreviousWorkoutSet(exercise, setIndex = 0) {
+  const { history } = getLocalStorage(); // most recent first
+
+  const today = formatDate();
+  const [, prev] =
+    Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) ||
+    [];
+
+  const sets = prev?.[exercise] ? prev[exercise].split(',') : [];
+  // console.log({ sets, setIndex, value: sets?.[setIndex] })
+  return parseSet(sets[setIndex]);
+};
 
 export function parseSet(str) {
   if (!str) {
@@ -63,15 +76,25 @@ export function formatHistory(history, size = 0) {
 }
 
 export function makeWeightOptions(weight) {
+  // whole numbers are not kettlebells, e.g., barbell, dumbbell, cable
   if (Number.isInteger(weight)) {
-    return Array.from({ length: 10 }, (_, i) => weight + i * 5); // 10 increments of 5
+    // deadlifts: 135 becomes 135..225 i.e., one plate to two plates
+    const length = 21;
+    const multiple = 5;
+
+    return Array.from({ length }, (_, i) => weight + i * multiple);
   } else {
-    const currentIndex = kettlebellWeights.indexOf(Math.round(weight));
-    if (currentIndex === -1 || currentIndex >= kettlebellWeights.length - 3) {
-      return kettlebellWeights;
+    const size = 3
+    const currentIndex = KETTLEBELL_WEIGHTS.indexOf(Math.round(weight));
+
+    if (currentIndex === -1) {
+      currentIndex = 0; // default to the first N weights
     }
 
-    // next 3 kettlebell weights
-    return kettlebellWeights.slice(currentIndex, currentIndex + 3);
+    if (currentIndex >= KETTLEBELL_WEIGHTS.length - size) {
+      currentIndex = KETTLEBELL_WEIGHTS.length - size; // stop at last N weights
+    }
+
+    return KETTLEBELL_WEIGHTS.slice(currentIndex, currentIndex + size);
   }
 }
