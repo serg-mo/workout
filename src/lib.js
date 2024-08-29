@@ -66,7 +66,7 @@ export function makeWeightOptions(weight) {
   } else {
     const currentIndex = kettlebellWeights.indexOf(Math.round(weight));
     if (currentIndex === -1 || currentIndex >= kettlebellWeights.length - 3) {
-      return kettlebellWeights
+      return kettlebellWeights;
     }
 
     // next 3 kettlebell weights

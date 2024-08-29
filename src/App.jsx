@@ -19,7 +19,7 @@ export default function App() {
       setWorkout(history[today]);
     } else {
       // if the current workout has changed, but it's not empty
-      console.log("Persisting workout", workout);
+      console.log('Persisting workout', workout);
 
       // const serializedWorkout = Object.fromEntries(
       //   Object.entries(workout).map(([exercise, sets]) => [exercise, sets.join(',')])

@@ -8,7 +8,7 @@ export default function Sets({ date, sets }) {
   return (
     <div className="my-2">
       <div className="inline-block w-16 mr-1">{title}</div>
-      {sets.map((set, index) => (
+      {sets.split(',').map((set, index) => (
         <div className="inline-block w-16 mx-1 text-center rounded bg-gray-300" key={index}>
           {set}
         </div>
