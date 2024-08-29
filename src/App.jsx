@@ -55,7 +55,7 @@ export default function App() {
     // TODO: this fails when the exercise is selected but there are no sets
 
     setWorkout((prev) => {
-      const sets = prev[exercise].split(",");
+      const sets = prev?.[exercise] ? prev[exercise].split(",") : [];
       sets.pop(); // remove the most recent set
 
       if (sets.length === 0) {

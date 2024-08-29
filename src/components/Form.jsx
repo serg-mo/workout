@@ -9,17 +9,16 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
   const [weightOptions, setWeightOptions] = useState([]);
   const [repsOptions, setRepsOptions] = useState([]);
 
-  const getPreviousWorkoutSet = (i) => {
+  // TODO: move this to lib
+  const getPreviousWorkoutSet = (setIndex) => {
     const today = formatDate();
     const [, prev] =
       Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) ||
       [];
 
-    if (prev?.[exercise]?.[i]) {
-      return parseSet(prev[exercise][i]);
-    }
-
-    return { weight: 0, reps: 0 };
+    const sets = prev?.[exercise] ? prev[exercise].split(",") : [];
+    // console.log({ sets, setIndex, value: sets?.[setIndex] })
+    return parseSet(sets[setIndex]);
   };
 
   useEffect(() => {
@@ -41,9 +40,8 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
   // when we add a new set, workout changes, and we update the weight/reps for the next set
   useEffect(() => {
     // look ahead one set
-    const currentSetIndex = !!workout?.[exercise] ? workout[exercise].length : 0;
-
-    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(currentSetIndex);
+    const sets = workout?.[exercise] ? workout[exercise].split(",") : [];
+    const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(sets.length);
 
     if (weightOptions.includes(prevWeight)) {
       setWeight(prevWeight);
