@@ -3,7 +3,7 @@ import { getLocalStorage, setLocalStorage } from '../lib';
 
 export default function Footer() {
   const [mailto, setMailto] = useState('');
-  const [version, setVersion] = useState('');
+  const [version, setVersion] = useState('dev');
 
   useEffect(() => {
     // TODO: consider using a hash of an exercise name instead of the full name (to save space)

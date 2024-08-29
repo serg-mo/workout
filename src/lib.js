@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 export const LOCAL_STORAGE_KEY = 'workout';
+const kettlebellWeights = [9, 13, 26, 35, 44, 53, 62, 70, 80];
 
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
@@ -57,4 +58,18 @@ export function formatHistory(history, size = 0) {
   });
 
   return Object.fromEntries(entries.slice(0, size || entries.length));
+}
+
+export function makeWeightOptions(weight) {
+  if (Number.isInteger(weight)) {
+    return Array.from({ length: 10 }, (_, i) => weight + i * 5); // 10 increments of 5
+  } else {
+    const currentIndex = kettlebellWeights.indexOf(Math.round(weight));
+    if (currentIndex === -1 || currentIndex >= kettlebellWeights.length - 3) {
+      return kettlebellWeights
+    }
+
+    // next 3 kettlebell weights
+    return kettlebellWeights.slice(currentIndex, currentIndex + 3);
+  }
 }

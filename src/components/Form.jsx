@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { arrayRange, formatDate, getLocalStorage, parseSet } from '../lib';
-
-const WEEKDAYS = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+import { arrayRange, formatDate, getLocalStorage, makeWeightOptions, parseSet } from '../lib';
 
 export default function Form({ workout, exercise, setExercise, handleSave, undoLast }) {
   const { workouts, history } = getLocalStorage(); // most recent first
@@ -33,19 +31,21 @@ export default function Form({ workout, exercise, setExercise, handleSave, undoL
       return;
     }
 
-    setExercises(workouts[workoutName]); // exercise => [weight options]
+    setExercises(workouts[workoutName]); // exercise => weight
     setExercise(Object.keys(workouts[workoutName])[0]); // first exercise in a workout
   }, [workoutName]);
 
   useEffect(() => {
     if (!exercise) return;
 
-    setWeightOptions(exercises[exercise]);
+    const options = makeWeightOptions(exercises[exercise]);
+
+    setWeightOptions(options);
     setRepsOptions(arrayRange(3, 20, 1));
 
     // initialize weight/reps from the first set of the last workout that contains this exercise
     const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(0);
-    if (exercises[exercise].includes(prevWeight)) {
+    if (options.includes(prevWeight)) {
       setWeight(prevWeight);
       setReps(prevReps);
     }

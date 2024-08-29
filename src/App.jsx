@@ -2,23 +2,28 @@ import React, { useEffect, useState } from 'react';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Form from './components/Form';
+import Setup from './components/Setup';
 import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
 
+// TODO: if I refresh the page, I lose the workout and have to manually get back to that exercise
 export default function App() {
   const [workout, setWorkout] = useState(null);
   const [exercise, setExercise] = useState(''); // must exist outside of form
+  const { workouts, history } = getLocalStorage();
 
   useEffect(() => {
     const today = formatDate();
-    const { workouts, history } = getLocalStorage();
-    if (workout === null) {
+
+    if (workout === null && history?.[today]) {
       // load today's saved workout after page refresh, if available
-      if (history?.[today]) {
-        setWorkout(history[today]);
-      }
+      setWorkout(history[today]);
     } else {
       // if the current workout has changed, but it's not empty
-      //console.log("Persisting workout", workout);
+      console.log("Persisting workout", workout);
+
+      // const serializedWorkout = Object.fromEntries(
+      //   Object.entries(workout).map(([exercise, sets]) => [exercise, sets.join(',')])
+      // );
 
       // NOTE: one workout per day
       setLocalStorage({
@@ -52,6 +57,10 @@ export default function App() {
       return { ...prev, [exercise]: sets };
     });
   };
+
+  if (Object.keys(workouts).length === 0) {
+    return <Setup />;
+  }
 
   // TODO: all of these form props can go into a context
   return (
