@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Form from './components/Form';
-import { formatDate, formatSet, getLocalStorage, setLocalStorage } from './lib';
+import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
 
 export default function App() {
   const [workout, setWorkout] = useState(null);
@@ -17,15 +17,13 @@ export default function App() {
         setWorkout(history[today]);
       }
     } else {
-      // TODO: sort by date here
-
       // if the current workout has changed, but it's not empty
       //console.log("Persisting workout", workout);
 
       // NOTE: one workout per day
       setLocalStorage({
         workouts,
-        history: { ...history, [today]: workout },
+        history: formatHistory({ ...history, [today]: workout }),
       });
     }
   }, [workout]);

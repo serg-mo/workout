@@ -42,17 +42,19 @@ export function getLocalStorage(size = 0) {
   }
 
   const { workouts, history } = data;
-  const entries = Object.entries(history); // [date, workouts][]
 
-  // TODO: consider sorting on export, not read
-  entries.sort((a, b) => {
+  return {
+    workouts,
+    history: formatHistory(history, size),
+  };
+}
+
+export function formatHistory(history, size = 0) {
+  const entries = Object.entries(history).sort((a, b) => {
     const dateA = new Date(a[0]);
     const dateB = new Date(b[0]);
     return dateB - dateA; // most recent first
   });
 
-  return {
-    workouts,
-    history: Object.fromEntries(entries.slice(0, size || entries.length)),
-  };
+  return Object.fromEntries(entries.slice(0, size || entries.length));
 }
