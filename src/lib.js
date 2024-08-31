@@ -12,13 +12,12 @@ export function getPreviousWorkoutSet(exercise, setIndex = 0) {
 
   const today = formatDate();
   const [, prev] =
-    Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) ||
-    [];
+    Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) || [];
 
   const sets = prev?.[exercise] ? prev[exercise].split(',') : [];
   // console.log({ sets, setIndex, value: sets?.[setIndex] })
   return parseSet(sets[setIndex]);
-};
+}
 
 export function parseSet(str) {
   if (!str) {
@@ -42,8 +41,9 @@ export function arrayRange(min, max, step) {
 }
 
 export function setLocalStorage(payload) {
-  // TODO: if (!payload || !("workouts" in payload) || !("history" in payload)) {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+  if (!payload || !('workouts' in payload) || !('history' in payload)) {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+  }
 }
 
 export function eraseLocalStorage() {
@@ -52,8 +52,7 @@ export function eraseLocalStorage() {
 
 export function getLocalStorage(size = 0) {
   const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-
-  if (!data || !('workouts' in data) || !('history' in data)) {
+  if (!data) {
     return { workouts: {}, history: {} };
   }
 
@@ -84,8 +83,8 @@ export function makeWeightOptions(weight) {
 
     return Array.from({ length }, (_, i) => weight + i * multiple);
   } else {
-    const size = 3
-    const currentIndex = KETTLEBELL_WEIGHTS.indexOf(Math.round(weight));
+    const size = 3;
+    let currentIndex = KETTLEBELL_WEIGHTS.indexOf(Math.round(weight));
 
     if (currentIndex === -1) {
       currentIndex = 0; // default to the first N weights

@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Sets({ date, sets }) {
   // NOTE: a set is weight + reps, e.g., 135x10
-  const format = 'MMM D'
+  const format = 'MMM D';
   const title = date ? moment(date).format(format) : 'Today';
 
   return (

@@ -7,7 +7,6 @@ export default function Dashboard({ workout, exercise }) {
     return;
   }
 
-  // TODO: read everything from context, not local storage, which is a render behind
   const { history } = getLocalStorage(); // most recent first
   const today = formatDate();
 
