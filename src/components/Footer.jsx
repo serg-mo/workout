@@ -6,14 +6,10 @@ export default function Footer() {
   const [version, setVersion] = useState('dev');
 
   useEffect(() => {
-    // TODO: consider using a hash of an exercise name instead of the full name (to save space)
-    const payload = getLocalStorage(4 * 3); // one month is 4 weeks at 3 workouts/week
+    // NOTE: Chrome breaks after ~2k chars, but 1 month of workouts fits
+    const payload = getLocalStorage(4 * 3);
     const json = JSON.stringify(payload, null, 0); // replacer, spaces
 
-    // TODO: get as much history as possible, not hardcoded size
-    console.log(`Export length ${json.length} vs 2083 max`);
-
-    // NOTE: Chrome only accepts links of 2083 characters or less
     setMailto(`mailto:?subject=Workout&body=${encodeURIComponent(json)}`);
   }, []);
 

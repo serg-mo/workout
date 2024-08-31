@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { arrayRange, getLocalStorage, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
+import { arrayRange, buttonStyle, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
 
 export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
-  const { workouts, history } = getLocalStorage(); // most recent first
-
+  const [exerciseOptions, setExerciseOptions] = useState([]);
   const [weight, setWeight] = useState(undefined);
   const [reps, setReps] = useState(0);
   const [weightOptions, setWeightOptions] = useState([]);
@@ -37,6 +36,21 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
     }
   }, [workout]);
 
+  useEffect(() => {
+    if (!exercises) {
+      return;
+    }
+
+    // append a star per set for every exercise today
+    setExerciseOptions(
+      Object.keys(exercises).map((value) => {
+        const sets = workout?.[value] ? workout[value].split(',') : [];
+        const stars = sets.length > 0 ? ` ${'*'.repeat(sets.length)}` : '';
+        return { value, label: `${value}${stars}` };
+      })
+    );
+  }, [workout, exercises]);
+
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-between text-3xl text-center">
       <select
@@ -47,9 +61,9 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
         <option value="" disabled>
           Exercise
         </option>
-        {Object.keys(exercises).map((exercise) => (
-          <option key={exercise} value={exercise}>
-            {exercise}
+        {exerciseOptions.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
           </option>
         ))}
       </select>
@@ -86,7 +100,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
 
       <div className="flex flex-row w-full space-x-2">
         <button
-          className="grow bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+          className={`grow ${buttonStyle}`}
           onClick={() => handleSave(exercise, weight, reps)}
           disabled={!exercise || !reps}
         >
@@ -94,7 +108,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
         </button>
 
         <button
-          className="bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+          className={buttonStyle}
           onClick={undoLast}
           disabled={!exercise}
         >
