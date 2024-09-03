@@ -12,7 +12,8 @@ export function getPreviousWorkoutSet(exercise, setIndex = 0) {
 
   const today = formatDate();
   const [, prev] =
-    Object.entries(history).find(([date, workout]) => date !== today && !!workout[exercise]) || [];
+    Object.entries(history).find(([date, workout]) => date !== today && !!workout?.[exercise]) ||
+    [];
 
   const sets = prev?.[exercise] ? prev[exercise].split(',') : [];
   // console.log({ sets, setIndex, value: sets?.[setIndex] })
@@ -42,8 +43,10 @@ export function arrayRange(min, max, step) {
 
 export function setLocalStorage(payload) {
   if (!payload || !('workouts' in payload) || !('history' in payload)) {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+    return;
   }
+
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
 }
 
 export function eraseLocalStorage() {
