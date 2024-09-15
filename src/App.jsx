@@ -4,13 +4,14 @@ import Footer from './components/Footer';
 import Form from './components/Form';
 import Setup from './components/Setup';
 import Workouts from './components/Workouts';
-import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
+import { buttonStyle, formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
 
 // NOTE: no need to ever refresh the page, unless to pick a different workout
 export default function App() {
   const [workoutName, setWorkoutName] = useState('');
   const [workout, setWorkout] = useState(null);
 
+  const [isSetupShown, setIsSetupShown] = useState(false);
   const [exercises, setExercises] = useState([]);
   const [exercise, setExercise] = useState(''); // must exist outside of form
 
@@ -27,6 +28,12 @@ export default function App() {
       setLocalStorage({ workouts, history: formatHistory({ ...history, [today]: workout }) });
     }
   }, [workout]);
+
+  useEffect(() => {
+    if (Object.keys(workouts).length === 0) {
+      setIsSetupShown(true);
+    }
+  }, [workouts]);
 
   useEffect(() => {
     if (!workoutName) {
@@ -64,6 +71,10 @@ export default function App() {
       return { ...prev, [exercise]: sets.join(',') };
     });
   };
+
+  if (isSetupShown) {
+    return <Setup />
+  }
 
   return (
     <div className="w-full h-dvh flex flex-col p-2">

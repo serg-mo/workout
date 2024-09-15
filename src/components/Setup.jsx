@@ -1,6 +1,7 @@
 import React from 'react';
 import { setLocalStorage } from '../lib';
 
+// TODO: load existing workouts, if available
 export default function Setup() {
   const placeholder = [
     'MONDAY',

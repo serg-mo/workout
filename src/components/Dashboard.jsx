@@ -15,11 +15,9 @@ export default function Dashboard({ workout, exercise }) {
     .filter(([date, workout]) => date !== today && !!workout?.[exercise])
     .map(([date, workout]) => ({ date, sets: workout[exercise] }));
 
-
-  if (!!workout?.[exercise]) {
-    console.log(workout[exercise])
-  }
-
+  // if (!!workout?.[exercise]) {
+  // console.log(workout[exercise]);
+  // }
 
   // NOTE: today must be separate or it will be one render behind
   return (

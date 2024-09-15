@@ -6,7 +6,7 @@ export default function Sets({ date, sets }) {
   const format = 'MMM D';
   const title = date ? moment(date).format(format) : 'Today';
 
-  console.log({ date, sets })
+  // console.log({ date, sets });
 
   return (
     <div className="my-2 flex flex-row">

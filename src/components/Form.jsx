@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { arrayRange, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
+import { arrayRange, buttonStyle, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
 
 export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
   const [exerciseOptions, setExerciseOptions] = useState([]);
@@ -100,7 +100,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
 
       <div className="flex flex-row w-full space-x-2">
         <button
-          className="grow bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+          className={`grow ${buttonStyle}`}
           onClick={() => handleSave(exercise, weight, reps)}
           disabled={!exercise || !reps}
         >
@@ -108,7 +108,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
         </button>
 
         <button
-          className="bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+          className={buttonStyle}
           onClick={undoLast}
           disabled={!exercise}
         >

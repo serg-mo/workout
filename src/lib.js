@@ -3,6 +3,8 @@ import moment from 'moment';
 export const LOCAL_STORAGE_KEY = 'workout';
 const KETTLEBELL_WEIGHTS = [17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 52.8, 61.6];
 
+export const buttonStyle = "bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
 }
@@ -86,17 +88,14 @@ export function makeWeightOptions(weight) {
 
     return Array.from({ length }, (_, i) => weight + i * multiple);
   } else {
-    const size = 3;
-    let currentIndex = KETTLEBELL_WEIGHTS.indexOf(Math.round(weight));
+    const length = 5;
 
-    if (currentIndex === -1) {
-      currentIndex = 0; // default to the first N weights
-    }
+    // default to the first N weights (not found is -1) and stop at the last N weights
+    const currentIndex = Math.min(
+      Math.max(KETTLEBELL_WEIGHTS.indexOf(weight), 0),
+      KETTLEBELL_WEIGHTS.length - length
+    );
 
-    if (currentIndex >= KETTLEBELL_WEIGHTS.length - size) {
-      currentIndex = KETTLEBELL_WEIGHTS.length - size; // stop at last N weights
-    }
-
-    return KETTLEBELL_WEIGHTS.slice(currentIndex, currentIndex + size);
+    return KETTLEBELL_WEIGHTS.slice(currentIndex, currentIndex + length);
   }
 }

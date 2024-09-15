@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Workouts({ workouts, onSelect }) {
   return (
-    <div className="text-gray-600 flex flex-col gap-2 items-center justify-center h-screen">
+    <div className="w-full text-gray-600 flex flex-col gap-2 items-center justify-center">
       {Object.entries(workouts).map(([name, workout]) => (
         <div
           key={name}
