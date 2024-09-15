@@ -107,11 +107,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
           Save
         </button>
 
-        <button
-          className={buttonStyle}
-          onClick={undoLast}
-          disabled={!exercise}
-        >
+        <button className={buttonStyle} onClick={undoLast} disabled={!exercise}>
           Undo
         </button>
       </div>

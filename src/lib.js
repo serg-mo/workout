@@ -3,7 +3,7 @@ import moment from 'moment';
 export const LOCAL_STORAGE_KEY = 'workout';
 const KETTLEBELL_WEIGHTS = [17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 52.8, 61.6];
 
-export const buttonStyle = "bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded"
+export const buttonStyle = 'bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded';
 
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');

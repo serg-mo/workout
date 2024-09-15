@@ -4,7 +4,14 @@ import Footer from './components/Footer';
 import Form from './components/Form';
 import Setup from './components/Setup';
 import Workouts from './components/Workouts';
-import { buttonStyle, formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
+import {
+  buttonStyle,
+  formatDate,
+  formatHistory,
+  formatSet,
+  getLocalStorage,
+  setLocalStorage,
+} from './lib';
 
 // NOTE: no need to ever refresh the page, unless to pick a different workout
 export default function App() {
@@ -72,28 +79,32 @@ export default function App() {
     });
   };
 
-  if (isSetupShown) {
-    return <Setup />
-  }
-
   return (
-    <div className="w-full h-dvh flex flex-col p-2">
-      {Object.keys(workouts).length === 0 && <Setup />}
-      {workoutName ? (
-        <>
-          <Form
-            workout={workout}
-            exercises={exercises}
-            exercise={exercise}
-            setExercise={setExercise}
-            handleSave={handleSave}
-            undoLast={undoLast}
-          />
-          <Dashboard workout={workout} exercise={exercise} />
-        </>
-      ) : (
-        <Workouts workouts={workouts} onSelect={setWorkoutName} />
-      )}
+    <div className="min-h-screen flex flex-col justify-center p-2">
+      <div className="flex flex-col gap-2 items-center justify-center grow">
+        {isSetupShown ? (
+          <Setup />
+        ) : workoutName ? (
+          <>
+            <Form
+              workout={workout}
+              exercises={exercises}
+              exercise={exercise}
+              setExercise={setExercise}
+              handleSave={handleSave}
+              undoLast={undoLast}
+            />
+            <Dashboard workout={workout} exercise={exercise} />
+          </>
+        ) : (
+          <>
+            <Workouts workouts={workouts} onSelect={setWorkoutName} />
+            <button className={buttonStyle} onClick={() => setIsSetupShown(true)}>
+              Setup
+            </button>
+          </>
+        )}
+      </div>
       <Footer />
     </div>
   );
