@@ -9,8 +9,8 @@ export default function Sets({ date, sets }) {
   // console.log({ date, sets });
 
   return (
-    <div className="my-2 flex flex-row">
-      <div className="inline-block flex-grow max-w-24 mr-1">{title}</div>
+    <div className="my-2 flex flex-row items-start">
+      <div className="inline-block flex-grow max-w-20 mr-1">{title}</div>
       {sets.split(',').map((set, index) => (
         <div className="inline-block w-20 mx-1 text-center rounded bg-gray-300" key={index}>
           {set}

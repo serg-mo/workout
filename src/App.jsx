@@ -80,7 +80,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center p-2">
+    <div className="h-dvh flex flex-col justify-center p-2">
       <div className="flex flex-col gap-2 items-center justify-center grow">
         {isSetupShown ? (
           <Setup />
