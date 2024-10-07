@@ -69,6 +69,8 @@ export function getLocalStorage(size = 0) {
   };
 }
 
+// TODO: consider making a useLocalStorage helper
+
 export function formatHistory(history, size = 0) {
   const entries = Object.entries(history).sort((a, b) => {
     const dateA = new Date(a[0]);
@@ -80,8 +82,9 @@ export function formatHistory(history, size = 0) {
 }
 
 export function makeWeightOptions(weight) {
-  // whole numbers are not kettlebells, e.g., barbell, dumbbell, cable
-  if (Number.isInteger(weight)) {
+  // initial weight that is a multiple of 5 must be in lbs, e.g., barbell, dumbbell, cable
+  // fractional weights are for kettlebells
+  if (Number.isInteger(weight) && weight % 5 === 0) {
     // deadlifts: 135 becomes 135..225 i.e., one plate to two plates
     const length = 21;
     const multiple = 5;

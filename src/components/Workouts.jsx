@@ -6,13 +6,14 @@ export default function Workouts({ workouts, onSelect }) {
       {Object.entries(workouts).map(([name, workout]) => (
         <div
           key={name}
-          className="p-2 rounded bg-gray-200 cursor-pointer w-1/2"
+          className="p-2 rounded bg-gray-200 cursor-pointer w-3/4"
           onClick={() => onSelect(name)}
         >
           <div className="text-xl font-bold">{name}</div>
-          {Object.keys(workout).map((exercise) => (
-            <div key={exercise} className="text-l text-gray-500">
-              {exercise}
+          {Object.entries(workout).map(([exercise, weight]) => (
+            <div key={exercise} className="text-l text-gray-500 flex flex-row">
+              <div className="w-3/4">{exercise}</div>
+              <div className="w-1/4 text-right">{weight}</div>
             </div>
           ))}
         </div>

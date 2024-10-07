@@ -12,6 +12,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
     if (!exercise) return;
 
     const options = makeWeightOptions(exercises[exercise]);
+    setWeight(exercises[exercise]); // default to setup weight
 
     setWeightOptions(options);
     setRepsOptions(arrayRange(3, 20, 1));

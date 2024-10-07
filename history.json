@@ -1,0 +1,67 @@
+{
+  "2024-09-30": {
+    "Front Squat": "135x10,135x10,135x5",
+    "Kettlebell Lunges": "26.4x10,26.4x10,26.4x10",
+    "Calves": "0x10,0x10,0x10",
+    "Cable Tricep": "30x10,40x5,30x8"
+  },
+  "2024-09-27": {
+    "Bicep Curls": "25x10,30x10,25x10",
+    "Bench Press": "135x10,155x10,155x7",
+    "Overhead Press": "75x10,75x8,75x6",
+    "Abs": "0x12,0x12,0x12"
+  },
+  "2024-09-23": {
+    "Front Squat": "135x10,135x10,135x10",
+    "Kettlebell Lunges": "26.4x10,26.4x10,26.4x10",
+    "Calves": "0x10,0x10,0x10",
+    "Cable Tricep": "30x10,40x10,40x8"
+  },
+  "2024-09-18": {
+    "Bench Press": "135x10,155x10,155x6",
+    "Overhead Press": "75x10,75x6,75x6",
+    "Bicep Curls": "25x10,30x10,25x10",
+    "Abs": "0x12,0x12,0x12"
+  },
+  "2024-09-16": {
+    "Bicep Curls": "25x10,30x10,30x5",
+    "Abs": "0x12,0x12,0x7",
+    "Bench Press": "135x10,155x8,155x6",
+    "Overhead Press": "75x10,75x10"
+  },
+  "2024-09-13": {
+    "Deadlift": "135x10,155x10,175x10",
+    "Cable Rows": "100x10,100x10,120x4",
+    "Cable Pull Downs": "100x10,120x6,120x3",
+    "Back Extensions": "0x10,0x10,0x10"
+  },
+  "2024-09-11": {
+    "Bench Press": "135x10,155x10,155x10",
+    "Overhead Press": "75x10,75x10,80x7",
+    "Bicep Curls": "25x10,25x10,30x10",
+    "Abs": "0x12,0x12,0x12"
+  },
+  "2024-09-09": {
+    "Front Squat": "135x10,135x10,135x10",
+    "Calves": "0x15,0x10,0x10",
+    "Kettlebell Lunges": "26.4x10,26.4x10,26.4x10",
+    "Cable Tricep": "30x10,40x10,40x7"
+  },
+  "2024-08-30": {
+    "Deadlift": "135x10,155x10,175x10",
+    "Cable Pull Downs": "100x10,120x10,120x10",
+    "Back Extensions": "0x10,0x10,0x10",
+    "Cable Rows": "100x10,120x10,140x4"
+  },
+  "2024-08-28": {
+    "Bench Press": "135x10,155x10,155x7",
+    "Overhead Press": "75x10,75x10,75x10",
+    "Bicep Curls": "20x10,25x10,25x10",
+    "Abs": "0x10,0x10,0x10"
+  },
+  "2024-08-19": {
+    "Squat": "135x20",
+    "Kettlebell Lunges": "35.2x10,35.2x10,35.2x10",
+    "Calves": "0x15,0x15,0x15"
+  }
+}

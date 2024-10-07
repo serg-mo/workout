@@ -63,6 +63,7 @@ export default function App() {
     });
   };
 
+  // TODO: after enough undos, I sometimes end up with a date key but no value
   const undoLast = () => {
     if (!exercise) return;
 
@@ -80,7 +81,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center p-2">
+    <div className="h-dvh flex flex-col justify-center p-2">
       <div className="flex flex-col gap-2 items-center justify-center grow">
         {isSetupShown ? (
           <Setup />
