@@ -81,31 +81,29 @@ export default function App() {
   };
 
   return (
-    <div className="h-dvh flex flex-col justify-center p-2">
-      <div className="flex flex-col gap-2 items-center justify-center grow">
-        {isSetupShown ? (
-          <Setup />
-        ) : workoutName ? (
-          <>
-            <Form
-              workout={workout}
-              exercises={exercises}
-              exercise={exercise}
-              setExercise={setExercise}
-              handleSave={handleSave}
-              undoLast={undoLast}
-            />
-            <Dashboard workout={workout} exercise={exercise} />
-          </>
-        ) : (
-          <>
-            <Workouts workouts={workouts} onSelect={setWorkoutName} />
-            <button className={buttonStyle} onClick={() => setIsSetupShown(true)}>
-              Setup
-            </button>
-          </>
-        )}
-      </div>
+    <div className="h-dvh flex flex-col justify-start items-center gap-2 m-auto w-full sm:max-w-sm p-2">
+      {isSetupShown ? (
+        <Setup />
+      ) : workoutName ? (
+        <>
+          <Form
+            workout={workout}
+            exercises={exercises}
+            exercise={exercise}
+            setExercise={setExercise}
+            handleSave={handleSave}
+            undoLast={undoLast}
+          />
+          <Dashboard workout={workout} exercise={exercise} />
+        </>
+      ) : (
+        <>
+          <Workouts workouts={workouts} onSelect={setWorkoutName} />
+          <button className={buttonStyle} onClick={() => setIsSetupShown(true)}>
+            Setup
+          </button>
+        </>
+      )}
       <Footer />
     </div>
   );

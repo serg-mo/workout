@@ -6,7 +6,7 @@ export default function Workouts({ workouts, onSelect }) {
       {Object.entries(workouts).map(([name, workout]) => (
         <div
           key={name}
-          className="p-2 rounded bg-gray-200 cursor-pointer w-3/4"
+          className="p-2 rounded bg-gray-200 cursor-pointer w-full"
           onClick={() => onSelect(name)}
         >
           <div className="text-xl font-bold">{name}</div>

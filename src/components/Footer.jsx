@@ -37,7 +37,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-auto text-sm">
+    <footer className="w-full text-sm">
       <div className="flex flex-row justify-between">
         <a onClick={onImport}>import</a>
         <span>{version}</span>
