@@ -1,9 +1,6 @@
 import moment from 'moment';
 
 export const LOCAL_STORAGE_KEY = 'workout';
-const KETTLEBELL_WEIGHTS = [17.6, 22, 26.4, 30.8, 35.2, 39.6, 44, 52.8, 61.6];
-
-export const buttonStyle = 'bg-blue-500 disabled:bg-gray-500 text-white font-bold p-2 rounded';
 
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
@@ -81,24 +78,27 @@ export function formatHistory(history, size = 0) {
   return Object.fromEntries(entries.slice(0, size || entries.length));
 }
 
-export function makeWeightOptions(weight) {
-  // initial weight that is a multiple of 5 must be in lbs, e.g., barbell, dumbbell, cable
-  // fractional weights are for kettlebells
-  if (Number.isInteger(weight) && weight % 5 === 0) {
-    // deadlifts: 135 becomes 135..225 i.e., one plate to two plates
-    const length = 21;
+export function makeWeightOptions(weight, exercise) {
+  // weight that is a multiple of 5 is in lbs, kettlebells are in kgs
+  if (weight % 5 !== 0) {
+    // 16 becomes 16..24 e.g., options on my adjustable kettlebell (kg)
+    const length = 5;
+    const multiple = 2;
+
+    return Array.from({ length }, (_, i) => weight + i * multiple);
+  }
+
+  if (exercise.includes('dumb')) {
+    // 5 becomes 5..60 e.g., options on my adjustable dumbbell (lb)
+    const length = 12;
     const multiple = 5;
 
     return Array.from({ length }, (_, i) => weight + i * multiple);
-  } else {
-    const length = 5;
-
-    // default to the first N weights (not found is -1) and stop at the last N weights
-    const currentIndex = Math.min(
-      Math.max(KETTLEBELL_WEIGHTS.indexOf(weight), 0),
-      KETTLEBELL_WEIGHTS.length - length
-    );
-
-    return KETTLEBELL_WEIGHTS.slice(currentIndex, currentIndex + length);
   }
+
+  // 135 becomes 135..225 i.e., barbell and 1-2 plates
+  const length = 21;
+  const multiple = 5;
+
+  return Array.from({ length }, (_, i) => weight + i * multiple);
 }

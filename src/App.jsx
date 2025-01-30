@@ -4,14 +4,7 @@ import Footer from './components/Footer';
 import Form from './components/Form';
 import Setup from './components/Setup';
 import Workouts from './components/Workouts';
-import {
-  buttonStyle,
-  formatDate,
-  formatHistory,
-  formatSet,
-  getLocalStorage,
-  setLocalStorage,
-} from './lib';
+import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
 
 // NOTE: no need to ever refresh the page, unless to pick a different workout
 export default function App() {
@@ -99,9 +92,7 @@ export default function App() {
       ) : (
         <>
           <Workouts workouts={workouts} onSelect={setWorkoutName} />
-          <button className={buttonStyle} onClick={() => setIsSetupShown(true)}>
-            Setup
-          </button>
+          <button onClick={() => setIsSetupShown(true)}>Setup</button>
         </>
       )}
       <Footer />

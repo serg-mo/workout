@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { arrayRange, buttonStyle, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
+import { arrayRange, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
 
 export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
   const [exerciseOptions, setExerciseOptions] = useState([]);
@@ -11,7 +11,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
   useEffect(() => {
     if (!exercise) return;
 
-    const options = makeWeightOptions(exercises[exercise]);
+    const options = makeWeightOptions(exercises[exercise], exercise);
     setWeight(exercises[exercise]); // default to setup weight
 
     setWeightOptions(options);
@@ -79,7 +79,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
         </option>
         {weightOptions.map((value) => (
           <option key={value} value={value}>
-            {value}lb
+            {value}
           </option>
         ))}
       </select>
@@ -101,14 +101,14 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
 
       <div className="flex flex-row w-full space-x-2">
         <button
-          className={`grow ${buttonStyle}`}
+          className="grow"
           onClick={() => handleSave(exercise, weight, reps)}
           disabled={!exercise || !reps}
         >
           Save
         </button>
 
-        <button className={buttonStyle} onClick={undoLast} disabled={!exercise}>
+        <button onClick={undoLast} disabled={!exercise}>
           Undo
         </button>
       </div>
