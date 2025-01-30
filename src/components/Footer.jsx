@@ -1,3 +1,4 @@
+import yaml from 'js-yaml';
 import React, { useEffect, useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '../lib';
 
@@ -8,9 +9,9 @@ export default function Footer() {
   useEffect(() => {
     // NOTE: Chrome breaks after ~2k chars, but 1 month of workouts fits
     const payload = getLocalStorage(4 * 3);
-    const json = JSON.stringify(payload, null, 0); // replacer, spaces
+    const body = yaml.dump(payload);
 
-    setMailto(`mailto:?subject=Workout&body=${encodeURIComponent(json)}`);
+    setMailto(`mailto:?subject=Workout&body=${encodeURIComponent(body)}`);
   }, []);
 
   useEffect(() => {
@@ -24,8 +25,7 @@ export default function Footer() {
 
   const onImport = () => {
     try {
-      const input = prompt('JSON').replace(/[\n|\r]/g, ' ');
-      const payload = JSON.parse(input); // NOTE: must use double quotes
+      const payload = yaml.load(prompt('YAML'))
       if (payload && Object.keys(payload).length) {
         setLocalStorage(payload);
         alert('Success');
