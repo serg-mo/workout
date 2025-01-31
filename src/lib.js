@@ -2,6 +2,28 @@ import moment from 'moment';
 
 export const LOCAL_STORAGE_KEY = 'workout';
 
+// max does not matter
+export const MIN_WORKOUTS = 2;
+export const MIN_EXERCISES = 3;
+
+export function isValidWorkouts(workouts) {
+  // expected shape example: weekday > exercise > weight
+  const isValidWorkouts =
+    workouts &&
+    Object.keys(workouts).length >= MIN_WORKOUTS &&
+    Object.keys(workouts).every((name) => isNaN(Number(name)));
+
+  const isValidExercises =
+    workouts &&
+    Object.values(workouts).every(
+      (exercises) =>
+        Object.keys(exercises).length >= MIN_EXERCISES &&
+        Object.values(exercises).every((weight) => !isNaN(Number(weight)))
+    );
+
+  return isValidWorkouts && isValidExercises
+}
+
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
 }

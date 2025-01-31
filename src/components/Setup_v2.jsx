@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { FaWindowClose } from "react-icons/fa";
+import { getLocalStorage } from '../lib';
 
-const initialData = {
+
+const placeholderWorkouts = {
   MONDAY: {
     "Dumbbell Flat Press": 20,
     "Dumbbell Fly": 10,
@@ -24,60 +27,67 @@ const initialData = {
   },
 };
 
-export default function WorkoutEditor() {
-  const [workout, setWorkout] = useState(initialData);
+export default function Setup() {
+  const { workouts: existingWorkouts, history } = getLocalStorage();
+
+  const [inProgressWorkouts, setInProgressWorkouts] = useState(existingWorkouts ?? placeholderWorkouts);
   const [newWorkoutName, setNewWorkoutName] = useState("");
   const [editingWorkout, setEditingWorkout] = useState(null);
 
-  const handleWeightChange = (workoutName, exercise, weight) => {
-    setWorkout((prev) => ({
+  const changeWeight = (workout, exercise, weight) => {
+    setInProgressWorkouts((prev) => ({
       ...prev,
-      [workoutName]: { ...prev[workoutName], [exercise]: weight },
+      [workout]: { ...prev[workout], [exercise]: weight },
     }));
   };
 
   const addExercise = (workoutName) => {
-    setWorkout((prev) => ({
+    setInProgressWorkouts((prev) => ({
       ...prev,
       [workoutName]: { ...prev[workoutName], "New Exercise": 0 },
     }));
   };
 
-  const removeExercise = (workoutName, exercise) => {
-    const updatedWorkout = { ...workout[workoutName] };
-    delete updatedWorkout[exercise];
-    setWorkout((prev) => ({ ...prev, [workoutName]: updatedWorkout }));
+  const removeExercise = (workout, exercise) => {
+    setInProgressWorkouts((prev) => {
+      const { [exercise]: _, ...rest } = prev[workout];
+      return { ...prev, [workout]: rest };
+    });
   };
 
   const addWorkout = () => {
     if (!newWorkoutName.trim()) return;
-    const formattedName = newWorkoutName.toUpperCase();
-    setWorkout((prev) => ({
+
+    const workout = newWorkoutName.toUpperCase();
+    setInProgressWorkouts((prev) => ({
+      [workout]: { "new exercise": 10 }, // must go first
       ...prev,
-      [formattedName]: {}
     }));
     setNewWorkoutName("");
   };
 
   const removeWorkout = (workoutName) => {
-    setWorkout((prev) => {
-      const newWorkout = { ...prev };
-      delete newWorkout[workoutName];
-      return newWorkout;
-    });
+    setInProgressWorkouts(({ [workoutName]: _, ...rest }) => rest);
   };
 
   const renameWorkout = (oldName, newName) => {
-    if (!newName.trim()) return;
-    const formattedName = newName.toUpperCase();
-    setWorkout((prev) => {
-      const newWorkout = { ...prev };
-      newWorkout[formattedName] = newWorkout[oldName];
-      delete newWorkout[oldName];
-      return newWorkout;
-    });
     setEditingWorkout(null);
+
+    if (oldName === newName || !newName.trim()) return;
+
+    setInProgressWorkouts((prev) => {
+      const { [oldName]: workout, ...rest } = prev;
+      return { [newName.toUpperCase()]: workout, ...rest }; // must go first
+    });
   };
+
+  // TODO: only write when the 
+  // useEffect(() => {
+  //   if (isValidWorkouts(inProgressWorkouts)) {
+  //     console.log("isValidWorkouts writing to local storage")
+  //     setLocalStorage({ workouts: inProgressWorkouts, history }); // overwrite workouts, preserve history
+  //   }
+  // }, [inProgressWorkouts])
 
   return (
     <div className="p-4 max-w-md mx-auto">
@@ -86,18 +96,17 @@ export default function WorkoutEditor() {
           type="text"
           value={newWorkoutName}
           onChange={(e) => setNewWorkoutName(e.target.value)}
-          placeholder="New workout name"
+          placeholder="New Workout"
           className="flex-1 bg-white border rounded px-3 py-1.5 text-sm"
         />
         <button
           onClick={addWorkout}
-          className="px-3 py-1.5 text-sm bg-green-500 hover:bg-green-600 text-white rounded"
         >
-          Add Workout
+          Add
         </button>
       </div>
 
-      {Object.entries(workout).map(([workoutName, exercises]) => (
+      {Object.entries(inProgressWorkouts).map(([workoutName, exercises]) => (
         <div key={workoutName} className="mb-6 p-4 bg-gray-100 rounded-lg">
           <div className="flex items-start gap-2">
             {editingWorkout === workoutName ? (
@@ -121,12 +130,7 @@ export default function WorkoutEditor() {
                 {workoutName}
               </h2>
             )}
-            <button
-              onClick={() => removeWorkout(workoutName)}
-              className="px-2.5 py-1.5 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
-            >
-              ✕
-            </button>
+            <FaWindowClose onClick={() => removeWorkout(workoutName)} />
           </div>
 
           {Object.entries(exercises).map(([exercise, weight]) => (
@@ -135,29 +139,21 @@ export default function WorkoutEditor() {
                 type="text"
                 value={exercise}
                 readOnly
-                className="flex-1 bg-white border rounded px-3 py-1.5 text-sm"
+                className="flex-1 bg-white border rounded px-2 py-1 text-sm"
               />
               <input
                 type="number"
                 value={weight}
                 onChange={(e) =>
-                  handleWeightChange(workoutName, exercise, Number(e.target.value))
+                  changeWeight(workoutName, exercise, Number(e.target.value))
                 }
-                className="w-16 text-center bg-white border rounded px-3 py-1.5 text-sm"
+                className="w-16 text-center bg-white border rounded px-2 py-1 text-sm"
               />
-              <button
-                onClick={() => removeExercise(workoutName, exercise)}
-                className="px-2.5 py-1.5 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
-              >
-                ✕
-              </button>
+              <FaWindowClose onClick={() => removeExercise(workoutName, exercise)} />
             </div>
           ))}
-          <button
-            onClick={() => addExercise(workoutName)}
-            className="mt-2 w-full px-3 py-1.5 text-sm border border-gray-300 rounded bg-gray-500 hover:bg-gray-50"
-          >
-            + Add Exercise
+          <button onClick={() => addExercise(workoutName)}>
+            + Add
           </button>
         </div>
       ))}

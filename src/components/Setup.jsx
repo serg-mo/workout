@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import React, { useState } from 'react';
-import { getLocalStorage, setLocalStorage } from '../lib';
+import { MIN_EXERCISES, MIN_WORKOUTS, getLocalStorage, isValidWorkouts, setLocalStorage } from '../lib';
 
 const placeholder = [
   'MONDAY:',
@@ -22,28 +22,6 @@ const placeholder = [
   '  Dumbbell Bent-Over Row: 20',
   '  Dumbbell Front Raise: 10',
 ].join('\n');
-
-// max does not matter
-const MIN_WORKOUTS = 2;
-const MIN_EXERCISES = 3;
-
-function isValidWorkouts(workouts) {
-  // expected shape example: weekday > exercise > weight
-  const isValidWorkouts =
-    workouts &&
-    Object.keys(workouts).length >= MIN_WORKOUTS &&
-    Object.keys(workouts).every((name) => isNaN(Number(name)));
-
-  const isValidExercises =
-    workouts &&
-    Object.values(workouts).every(
-      (exercises) =>
-        Object.keys(exercises).length >= MIN_EXERCISES &&
-        Object.values(exercises).every((weight) => !isNaN(Number(weight)))
-    );
-
-  return isValidWorkouts && isValidExercises
-}
 
 export default function Setup() {
   const { workouts, history } = getLocalStorage();
