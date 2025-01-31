@@ -23,43 +23,50 @@ const placeholder = [
   '  Dumbbell Front Raise: 10',
 ].join('\n');
 
+// max does not matter
+const MIN_WORKOUTS = 2;
+const MIN_EXERCISES = 3;
+
+function isValidWorkouts(workouts) {
+  // expected shape example: weekday > exercise > weight
+  const isValidWorkouts =
+    workouts &&
+    Object.keys(workouts).length >= MIN_WORKOUTS &&
+    Object.keys(workouts).every((name) => isNaN(Number(name)));
+
+  const isValidExercises =
+    workouts &&
+    Object.values(workouts).every(
+      (exercises) =>
+        Object.keys(exercises).length >= MIN_EXERCISES &&
+        Object.values(exercises).every((weight) => !isNaN(Number(weight)))
+    );
+
+  return isValidWorkouts && isValidExercises
+}
+
 export default function Setup() {
-  const { workouts } = getLocalStorage();
+  const { workouts, history } = getLocalStorage();
   const [value, setValue] = useState(
     Object.keys(workouts).length ? yaml.dump(workouts) : placeholder
   );
 
-  const MIN_WORKOUTS = 2;
-  const MIN_EXERCISES = 3;
-
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const workouts = yaml.load(e.target.workouts.value);
-    // TODO: assert that the workout is of the right shape e.g., weekday > exercise > weight
-
-    const isValidWorkouts =
-      workouts &&
-      Object.keys(workouts).length >= MIN_WORKOUTS &&
-      Object.keys(workouts).every((name) => isNaN(Number(name)));
-
-    const isValidExercises =
-      workouts &&
-      Object.values(workouts).every(
-        (exercises) =>
-          Object.keys(exercises).length >= MIN_EXERCISES &&
-          Object.keys(exercises).every((name) => isNaN(Number(name)))
-      );
-
-    if (isValidWorkouts && isValidExercises) {
-      setLocalStorage({ workouts, history: {} });
+    if (isValidWorkouts(workouts)) {
+      setLocalStorage({ workouts, history }); // overwrite workouts, preserve history
       window.location.reload();
     } else {
-      console.log(`${MIN_WORKOUTS} min workouts, ${MIN_EXERCISES} min exercises each`);
+      alert(`
+        Minimum ${MIN_WORKOUTS} workouts, ${MIN_EXERCISES} exercises each
+        Shape Example: weekday > exercise > weight
+      `);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <div className="font-bold text-center">Setup</div>
       <textarea
         name="workouts"
