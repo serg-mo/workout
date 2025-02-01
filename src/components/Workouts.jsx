@@ -10,10 +10,9 @@ export default function Workouts({ workouts, onSelect }) {
           onClick={() => onSelect(name)}
         >
           <div className="text-xl font-bold">{name}</div>
-          {Object.entries(workout).map(([exercise, weight]) => (
-            <div key={exercise} className="text-l text-gray-500 flex flex-row">
-              <div className="w-3/4">{exercise}</div>
-              <div className="w-1/4 text-right">{weight}</div>
+          {Object.keys(workout).map((exercise) => (
+            <div key={exercise} className="text-l text-gray-500">
+              {exercise}
             </div>
           ))}
         </div>
