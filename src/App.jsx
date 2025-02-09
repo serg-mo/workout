@@ -93,9 +93,9 @@ export default function App() {
         <>
           <Workouts workouts={workouts} onSelect={setWorkoutName} />
           <button onClick={() => setIsSetupShown(true)}>Setup</button>
+          <Footer />
         </>
       )}
-      <Footer />
     </div>
   );
 }
