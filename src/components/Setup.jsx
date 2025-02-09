@@ -1,6 +1,12 @@
 import yaml from 'js-yaml';
 import React, { useState } from 'react';
-import { MIN_EXERCISES, MIN_WORKOUTS, getLocalStorage, isValidWorkouts, setLocalStorage } from '../lib';
+import {
+  MIN_EXERCISES,
+  MIN_WORKOUTS,
+  getLocalStorage,
+  isValidWorkouts,
+  setLocalStorage,
+} from '../lib';
 
 const placeholder = [
   'MONDAY:',
