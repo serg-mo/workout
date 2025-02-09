@@ -25,7 +25,7 @@ export default function Footer() {
 
   const onImport = () => {
     try {
-      const payload = yaml.load(prompt('YAML'))
+      const payload = yaml.load(prompt('YAML'));
       if (payload && Object.keys(payload).length) {
         setLocalStorage(payload);
         alert('Success');

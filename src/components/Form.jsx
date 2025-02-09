@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { arrayRange, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
+import ExercisePickerV2 from './form/exercisePickerV2';
 
 export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
   const [exerciseOptions, setExerciseOptions] = useState([]);
@@ -46,28 +47,15 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
     setExerciseOptions(
       Object.keys(exercises).map((value) => {
         const sets = workout?.[value] ? workout[value].split(',') : [];
-        const stars = sets.length > 0 ? ` ${'*'.repeat(sets.length)}` : '';
+        const stars = sets.length > 0 ? ` ${'·'.repeat(sets.length)}` : '';
         return { value, label: `${value}${stars}` };
       })
     );
   }, [workout, exercises]);
 
   return (
-    <div className="flex flex-row flex-wrap gap-2 justify-between text-3xl text-center">
-      <select
-        value={exercise}
-        onChange={(e) => setExercise(e.target.value)}
-        className="appearance-none w-full p-3 leading-tight border rounded focus:outline-none"
-      >
-        <option value="" disabled>
-          Exercise
-        </option>
-        {exerciseOptions.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+    <div className="flex flex-row flex-wrap gap-2 justify-between text-2xl text-center">
+      <ExercisePickerV2 {...{ exercise, setExercise, exerciseOptions }} />
 
       <select
         value={weight}

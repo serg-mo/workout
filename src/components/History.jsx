@@ -1,19 +1,19 @@
-import moment from "moment";
-import React from "react";
-import { formatDate, getLocalStorage } from "../lib";
+import moment from 'moment';
+import React from 'react';
+import { formatDate, getLocalStorage } from '../lib';
 
 const getColor = (count) => {
-  if (count === 0) return "bg-gray-100";
-  if (count === 1) return "bg-green-100";
-  if (count === 2) return "bg-green-300";
-  if (count === 3) return "bg-green-500";
-  return "bg-green-700";
+  if (count === 0) return 'bg-gray-100';
+  if (count === 1) return 'bg-green-100';
+  if (count === 2) return 'bg-green-300';
+  if (count === 3) return 'bg-green-500';
+  return 'bg-green-700';
 };
 
 export default function History() {
   const { history } = getLocalStorage();
   const length = 12; // weeks
-  const startDate = moment().subtract(length, "weeks").endOf("week");
+  const startDate = moment().subtract(length, 'weeks').endOf('week');
 
   return (
     <div className="flex justify-center p-4 overflow-auto">
@@ -22,7 +22,7 @@ export default function History() {
           {[...Array(7)].map((_, dayIndex) => (
             <tr key={dayIndex}>
               {[...Array(length + 1)].map((_, weekIndex) => {
-                const date = startDate.clone().add(weekIndex, "weeks").add(dayIndex, "days");
+                const date = startDate.clone().add(weekIndex, 'weeks').add(dayIndex, 'days');
                 const dateStr = formatDate(date);
                 const count = history[dateStr] ? Object.keys(history[dateStr]).length : 0;
                 const isToday = date.isSame(moment(), 'day');
