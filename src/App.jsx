@@ -73,6 +73,7 @@ export default function App() {
     });
   };
 
+  // TODO: disable rotating when the iPhone rotates, portrait always
   return (
     <div className="h-dvh flex flex-col justify-start items-center gap-2 m-auto w-full sm:max-w-sm p-2">
       {isSetupShown ? (
