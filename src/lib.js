@@ -106,7 +106,8 @@ export function makeWeightOptions(weight, exercise) {
 
   if (exercise.toLowerCase().includes('dumb')) {
     // 5 becomes 5..60 e.g., options on my adjustable dumbbell (lb)
-    [length, multiple] = [23, 5];
+    // front/lateral raises are small, so less options and more resolution
+    [length, multiple] = exercise.toLowerCase().includes('raise') ? [5, 2.5] : [23, 5];
   }
 
   if (exercise.toLowerCase().includes('kettle')) {
