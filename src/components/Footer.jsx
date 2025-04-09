@@ -1,18 +1,14 @@
 import yaml from 'js-yaml';
+import { QRCodeSVG } from 'qrcode.react';
 import React, { useEffect, useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '../lib';
 
 export default function Footer() {
-  const [mailto, setMailto] = useState('');
   const [version, setVersion] = useState('dev');
+  const [showQR, setShowQR] = useState(false);
 
-  useEffect(() => {
-    // NOTE: Chrome breaks after ~2k chars, but 1 month of workouts fits
-    const payload = getLocalStorage(4 * 3);
-    const body = yaml.dump(payload);
-
-    setMailto(`mailto:?subject=Workout&body=${encodeURIComponent(body)}`);
-  }, []);
+  // TODO: this can also be binary
+  const payload = JSON.stringify(getLocalStorage(4 * 3));
 
   useEffect(() => {
     // NOTE: github action writes to this file
@@ -36,13 +32,23 @@ export default function Footer() {
     }
   };
 
+  const onExport = (e) => {
+    e.preventDefault();
+    setShowQR(!showQR);
+  };
+
   return (
     <footer className="w-full text-sm">
       <div className="flex flex-row justify-between">
         <a onClick={onImport}>import</a>
         <span>{version}</span>
-        <a href={mailto}>export</a>
+        <a onClick={onExport}>export</a>
       </div>
+      {showQR && (
+        <div className="fixed inset-0 bg-white flex items-center justify-center">
+          <QRCodeSVG value={payload} size={256} className="p-4 rounded-lg" />
+        </div>
+      )}
     </footer>
   );
 }
