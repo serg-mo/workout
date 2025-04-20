@@ -46,8 +46,8 @@ export default function Footer() {
         <a onClick={onExport}>export</a>
       </div>
       {showQR && (
-        <div className="mt-4">
-          <QRCodeSVG value={value} />
+        <div className="fixed inset-0 bg-white flex items-center justify-center">
+          <QRCodeSVG value={value} size={256} className="p-4 rounded-lg" />
         </div>
       )}
     </footer>
