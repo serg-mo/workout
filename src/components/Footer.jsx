@@ -7,9 +7,8 @@ export default function Footer() {
   const [version, setVersion] = useState('dev');
   const [showQR, setShowQR] = useState(false);
 
-  // NOTE: Chrome breaks after ~2k chars, but 1 month of workouts fits
-  const payload = getLocalStorage(4 * 3);
-  const value = encodeURIComponent(payload);
+  // TODO: this can also be binary
+  const payload = JSON.stringify(getLocalStorage(4 * 3));
 
   useEffect(() => {
     // NOTE: github action writes to this file
@@ -47,7 +46,7 @@ export default function Footer() {
       </div>
       {showQR && (
         <div className="fixed inset-0 bg-white flex items-center justify-center">
-          <QRCodeSVG value={value} size={256} className="p-4 rounded-lg" />
+          <QRCodeSVG value={payload} size={256} className="p-4 rounded-lg" />
         </div>
       )}
     </footer>
