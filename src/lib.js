@@ -100,20 +100,20 @@ export function formatHistory(history, size = 0) {
   return Object.fromEntries(entries.slice(0, size || entries.length));
 }
 
-export function makeWeightOptions(weight, exercise) {
-  // 135 becomes 135..225 i.e., barbell and 1..2 plates
+export function makeWeightOptions(name) {
+  // default to barbell, two plates max
   let [length, multiple] = [21, 5];
 
-  if (exercise.toLowerCase().includes('dumb')) {
-    // 5 becomes 5..60 e.g., options on my adjustable dumbbell (lb)
-    // front/lateral raises are small, so less options and more resolution
-    [length, multiple] = exercise.toLowerCase().includes('raise') ? [5, 2.5] : [23, 5];
+  if (name.toLowerCase().includes('dumb')) {
+    // 5..60 are the options on my REP adjustable dumbbell (lb)
+    // front/lateral raises are light, just a single 2.5lb plate
+    [length, multiple] = name.toLowerCase().includes('raise') ? [4, 2.5] : [12, 5];
   }
 
-  if (exercise.toLowerCase().includes('kettle')) {
-    // 16 becomes 16..24 e.g., options on my adjustable kettlebell (kg)
+  if (name.toLowerCase().includes('kettle')) {
+    // 8-16 and 16-24 are the options on my REP adjustable kettlebell (kg)
     [length, multiple] = [5, 2];
   }
 
-  return Array.from({ length }, (_, i) => weight + i * multiple);
+  return Array.from({ length }, (_, i) => (i + 1) * multiple);
 }

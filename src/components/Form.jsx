@@ -12,7 +12,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
   useEffect(() => {
     if (!exercise) return;
 
-    const options = makeWeightOptions(exercises[exercise], exercise);
+    const options = makeWeightOptions(exercise);
     setWeight(exercises[exercise]); // default to setup weight
 
     setWeightOptions(options);
