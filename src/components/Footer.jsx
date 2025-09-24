@@ -6,6 +6,7 @@ import { getLocalStorage, setLocalStorage } from '../lib';
 export default function Footer() {
   const [version, setVersion] = useState('dev');
   const [showQR, setShowQR] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
   // TODO: this can also be binary
   const payload = JSON.stringify(getLocalStorage(4 * 3));
@@ -17,6 +18,10 @@ export default function Footer() {
         response.text().then(setVersion);
       }
     });
+
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const onImport = () => {
@@ -46,7 +51,7 @@ export default function Footer() {
       </div>
       {showQR && (
         <div className="fixed inset-0 bg-white flex items-center justify-center">
-          <QRCodeSVG value={payload} size={256} className="p-4 rounded-lg" />
+          <QRCodeSVG value={payload} size={viewportWidth} className="p-4 rounded-lg" />
         </div>
       )}
     </footer>

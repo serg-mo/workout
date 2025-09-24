@@ -101,19 +101,20 @@ export function formatHistory(history, size = 0) {
 }
 
 export function makeWeightOptions(name) {
-  // default to barbell, two plates max
-  let [length, multiple] = [21, 5];
+  // default to barbell, two plates max, empty bar min
+  let [length, multiple, min] = [21, 5, 45];
 
   if (name.toLowerCase().includes('dumb')) {
     // 5..60 are the options on my REP adjustable dumbbell (lb)
     // front/lateral raises are light, just a single 2.5lb plate
-    [length, multiple] = name.toLowerCase().includes('raise') ? [4, 2.5] : [12, 5];
+    [length, multiple, min] = name.toLowerCase().includes('raise') ? [3, 2.5, 5] : [12, 5, 5];
   }
 
   if (name.toLowerCase().includes('kettle')) {
     // 8-16 and 16-24 are the options on my REP adjustable kettlebell (kg)
-    [length, multiple] = [5, 2];
+    [length, multiple, min] = [9, 2, 8];
   }
 
-  return Array.from({ length }, (_, i) => (i + 1) * multiple);
+  // console.log({ name, length, multiple })
+  return Array.from({ length }, (_, i) => min + (i * multiple));
 }
