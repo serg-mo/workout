@@ -1,5 +1,7 @@
 # Workout
 
-![Demo](./public/demo.png)
+![Workouts](./public/workouts.png)
+
+![Workout](./public/workout.png)
 
 ![Hardware](./public/hardware.jpg)
