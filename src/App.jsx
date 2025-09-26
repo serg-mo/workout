@@ -18,7 +18,7 @@ export default function App() {
   const [workoutName, setWorkoutName] = useState('');
   const [workout, setWorkout] = useState(null);
 
-  const [isSetupShown, setIsSetupShown] = useState(false);
+  const [isSetupShown, setIsSetupShown] = useState(false); // must be here to render instead of form
   const [exercises, setExercises] = useState([]);
   const [exercise, setExercise] = useState(''); // must exist outside of form
 
@@ -37,6 +37,7 @@ export default function App() {
   }, [workout]);
 
   useEffect(() => {
+    // NOTE: setup on first visit
     if (Object.keys(workouts).length === 0) {
       setIsSetupShown(true);
     }
@@ -83,7 +84,7 @@ export default function App() {
   return (
     <div className="h-dvh flex flex-col justify-start items-center gap-2 m-auto w-full sm:max-w-sm p-2">
       {isSetupShown ? (
-        <Setup />
+        <Setup back={() => setIsSetupShown(false)} />
       ) : workoutName ? (
         <>
           <Form
@@ -99,8 +100,7 @@ export default function App() {
       ) : (
         <>
           <Workouts workouts={workouts} onSelect={setWorkoutName} />
-          <button onClick={() => setIsSetupShown(true)}>Setup</button>
-          <Footer />
+          <Footer onSetup={() => setIsSetupShown(true)} />
         </>
       )}
     </div>

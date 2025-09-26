@@ -29,7 +29,7 @@ const placeholder = [
   '  Dumbbell Front Raise: 10',
 ].join('\n');
 
-export default function Setup() {
+export default function Setup({ back }) {
   const { workouts, history } = getLocalStorage();
   const [value, setValue] = useState(
     Object.keys(workouts).length ? yaml.dump(workouts) : placeholder
@@ -61,6 +61,7 @@ export default function Setup() {
         className="grow m-auto border border-gray-500 font-mono text-sm text-left focus:outline-none"
       />
       <button type="submit">Save</button>
+      <button onClick={back}>Back</button>
     </form>
   );
 }
