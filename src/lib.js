@@ -74,6 +74,7 @@ export function eraseLocalStorage() {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
 }
 
+// TODO: instead of size, take a startDate
 export function getLocalStorage(size = 0) {
   const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
   if (!data) {
