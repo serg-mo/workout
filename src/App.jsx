@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Form from './components/Form';
+import History from './components/History';
 import Setup from './components/Setup';
 import Workouts from './components/Workouts';
 import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage } from './lib';
@@ -100,6 +101,7 @@ export default function App() {
       ) : (
         <>
           <Workouts workouts={workouts} onSelect={setWorkoutName} />
+          <History />
           <Footer onSetup={() => setIsSetupShown(true)} />
         </>
       )}

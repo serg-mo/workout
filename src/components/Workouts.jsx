@@ -10,11 +10,9 @@ export default function Workouts({ workouts, onSelect }) {
           className="p-2 rounded bg-gray-200 cursor-pointer w-full"
           onClick={() => onSelect(name)}
         >
-          <div className="text-xl font-bold">{name}</div>
+          <div className="text-xl text-gray-500 font-bold">{name}</div>
           {Object.keys(workout).map((exercise) => (
-            <div key={exercise} className="text-l text-gray-500">
-              {exercise}
-            </div>
+            <div key={exercise}>{exercise}</div>
           ))}
         </div>
       ))}

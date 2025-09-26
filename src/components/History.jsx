@@ -16,12 +16,12 @@ export default function History() {
   const startDate = moment().subtract(length, 'weeks').endOf('week');
 
   return (
-    <div className="flex justify-center p-4 overflow-auto">
-      <table className="table-auto border-collapse border border-gray-400">
+    <div className="flex justify-center p-2 overflow-auto">
+      <table className="table-auto border-collapse">
         <tbody>
           {[...Array(7)].map((_, dayIndex) => (
             <tr key={dayIndex}>
-              {[...Array(length + 1)].map((_, weekIndex) => {
+              {[...Array(length)].map((_, weekIndex) => {
                 const date = startDate.clone().add(weekIndex, 'weeks').add(dayIndex, 'days');
                 const dateStr = formatDate(date);
                 const count = history[dateStr] ? Object.keys(history[dateStr]).length : 0;
@@ -30,7 +30,7 @@ export default function History() {
                 return (
                   <td
                     key={dateStr}
-                    className={`w-7 h-7 text-center border ${isToday && !count ? 'bg-red-200' : getColor(count)}`}
+                    className={`w-3 h-3 text-center border ${isToday && !count ? 'bg-red-200' : getColor(count)}`}
                     title={`${dateStr}: ${count} exercises`}
                   />
                 );
