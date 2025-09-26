@@ -7,7 +7,7 @@ export default function ExercisePickerV2({ exercise, setExercise, exerciseOption
         <div
           key={value}
           onClick={() => setExercise(value)}
-          className={`text-left p-3 border rounded-lg ${exercise === value ? 'bg-blue-400 text-white border-blue-400' : 'bg-white border-gray-300'}`}
+          className={`text-left p-3 border rounded-lg border-gray-300 ${exercise === value ? 'bg-gray-300' : 'bg-white'}`}
         >
           {label}
         </div>
