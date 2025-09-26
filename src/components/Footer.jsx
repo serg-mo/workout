@@ -1,4 +1,3 @@
-import yaml from 'js-yaml';
 
 import React, { useEffect, useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '../lib';
@@ -18,7 +17,7 @@ export default function Footer({ onSetup }) {
 
   const onImport = () => {
     try {
-      const payload = yaml.load(prompt('YAML'));
+      const payload = JSON.parse(prompt('JSON'));
       if (payload && Object.keys(payload).length) {
         setLocalStorage(payload);
         alert('Success');
@@ -32,16 +31,11 @@ export default function Footer({ onSetup }) {
   const onExport = (e) => {
     e.preventDefault();
     // NOTE: Chrome breaks after ~2k chars, but 4 weeks of workouts fits
-    const payload = getLocalStorage(4 * 3);
-    const body = yaml.dump(payload);
+    // NOTE: spaces don't work on iPhone, so yaml is not an option
+    const body = JSON.stringify(getLocalStorage(4 * 3));
+    const subject = `Workout ${new Date().toISOString().split('T')[0]}`
 
-    // preserve spaces and newlines for mail body
-    const formattedBody = body
-      .replace(/ /g, '%20')
-      .replace(/\n/g, '%0A');
-
-    const mailtoLink = `mailto:?subject=Workout&body=${formattedBody}`;
-    window.location.href = mailtoLink;
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
   return (
