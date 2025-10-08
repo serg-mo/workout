@@ -3,26 +3,24 @@ import { arrayRange, getPreviousWorkoutSet, makeWeightOptions } from '../lib';
 import ExercisePickerV2 from './form/exercisePickerV2';
 
 export default function Form({ workout, exercises, exercise, setExercise, handleSave, undoLast }) {
-  const [exerciseOptions, setExerciseOptions] = useState([]);
   const [weight, setWeight] = useState(undefined);
   const [reps, setReps] = useState(0);
   const [weightOptions, setWeightOptions] = useState([]);
-  const [repsOptions, setRepsOptions] = useState([]);
+  const repsOptions = arrayRange(3, 20, 1); // 3-20 reps
 
   useEffect(() => {
     if (!exercise) return;
 
     const options = makeWeightOptions(exercise);
-    setWeight(exercises[exercise]); // default to setup weight
-
     setWeightOptions(options);
-    setRepsOptions(arrayRange(3, 20, 1));
 
     // initialize weight/reps from the first set of the last workout that contains this exercise
     const { weight: prevWeight, reps: prevReps } = getPreviousWorkoutSet(exercise, 0);
     if (options.includes(prevWeight)) {
       setWeight(prevWeight);
       setReps(prevReps);
+    } else {
+      setWeight(exercises[exercise]); // default weight from setup
     }
   }, [exercise]);
 
@@ -38,29 +36,14 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
     }
   }, [workout]);
 
-  useEffect(() => {
-    if (!exercises) {
-      return;
-    }
-
-    // append a star per set for every exercise today
-    setExerciseOptions(
-      Object.keys(exercises).map((value) => {
-        const sets = workout?.[value] ? workout[value].split(',') : [];
-        const stars = sets.length > 0 ? ` ${'·'.repeat(sets.length)}` : '';
-        return { value, label: `${value}${stars}` };
-      })
-    );
-  }, [workout, exercises]);
-
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-between text-2xl text-center">
-      <ExercisePickerV2 {...{ exercise, setExercise, exerciseOptions }} />
+      <ExercisePickerV2 {...{ workout, exercises, exercise, setExercise }} />
 
       <select
         value={weight}
         onChange={(e) => setWeight(e.target.value)}
-        className="grow appearance-none p-3 border rounded focus:outline-none"
+        className="grow appearance-none p-3 border border-gray-300 text-center rounded focus:outline-none"
       >
         <option value={undefined} disabled>
           Weight
@@ -75,7 +58,7 @@ export default function Form({ workout, exercises, exercise, setExercise, handle
       <select
         value={reps}
         onChange={(e) => setReps(e.target.value)}
-        className="grow appearance-none p-3 border rounded focus:outline-none"
+        className="grow appearance-none p-3 border border-gray-300 text-center rounded focus:outline-none"
       >
         <option value={0} disabled>
           Reps

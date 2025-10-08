@@ -2,23 +2,16 @@ import React from 'react';
 import { formatDate, getLocalStorage } from '../lib';
 import Sets from './Sets';
 
+// TODO: consider saving history in the dashboard format, ie exercise:date:set.
 export default function Dashboard({ workout, exercise }) {
-  if (!exercise) {
-    return;
-  }
-
   const { history } = getLocalStorage(); // most recent first
   const today = formatDate();
 
-  // TODO: consider saving history in the dashboard format, ie exercise:date:set.
-  // any workouts before today that contain this exercise
+  // NOTE: workouts before today that contain this exercise, limit to N most recent
   const prev = Object.entries(history)
     .filter(([date, workout]) => date !== today && !!workout?.[exercise])
-    .map(([date, workout]) => ({ date, sets: workout[exercise] }));
-
-  // if (!!workout?.[exercise]) {
-  // console.log(workout[exercise]);
-  // }
+    .map(([date, workout]) => ({ date, sets: workout[exercise] }))
+    .slice(0, 3);
 
   // NOTE: today must be separate or it will be one render behind
   return (

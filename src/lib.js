@@ -96,7 +96,7 @@ export function formatHistory(history, size = 0) {
     const dateA = new Date(a[0]);
     const dateB = new Date(b[0]);
     return dateB - dateA; // most recent first
-  });
+  }).filter(([date, workout]) => workout !== null);
 
   return Object.fromEntries(entries.slice(0, size || entries.length));
 }

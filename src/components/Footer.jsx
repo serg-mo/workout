@@ -44,7 +44,7 @@ export default function Footer({ onSetup }) {
         <a onClick={onSetup}>setup</a>
         <a onClick={onImport}>import</a>
         <a onClick={onExport}>export</a>
-        <span>v:{version}</span>
+        <a href="https://github.com/serg-mo/workout/commits/main/" target="_blank">v:{version}</a>
       </div>
     </footer>
   );
