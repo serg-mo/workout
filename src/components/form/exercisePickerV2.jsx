@@ -12,7 +12,7 @@ export default function ExercisePickerV2({ workout, exercises, exercise, setExer
     setExerciseOptions(
       Object.keys(exercises).map((value) => {
         const sets = workout?.[value] ? workout[value].split(',') : [];
-        const stars = sets.length > 0 ? ` ${'*'.repeat(sets.length)}` : '';
+        const stars = sets.length > 0 ? '*'.repeat(sets.length) : '';
         return { value, stars };
       })
     );

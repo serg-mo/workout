@@ -1,0 +1,62 @@
+{
+  "Dumbbell Bent-Over Row": {
+    "primary": "Latissimus Dorsi, Rhomboids, Trapezius, Deltoids",
+    "secondary": "Biceps, Forearms, Erector spinae, Core"
+  },
+  "Dumbbell Curl": {
+    "primary": "Biceps, Brachialis",
+    "secondary": "Brachioradialis, Forearms"
+  },
+  "Dumbbell Extension": {
+    "primary": "Triceps",
+    "secondary": "Anconeus, Forearms"
+  },
+  "Dumbbell Flat Press": {
+    "primary": "Pectoralis, Deltoids",
+    "secondary": "Triceps, Serratus Anterior, Core"
+  },
+  "Dumbbell Fly": {
+    "primary": "Pectoralis",
+    "secondary": "Deltoids, Biceps, Rotator cuff"
+  },
+  "Dumbbell Front Raise": {
+    "primary": "Deltoids",
+    "secondary": "Supraspinatus, Pectoralis, Trapezius, Serratus Anterior"
+  },
+  "Dumbbell Incline Press": {
+    "primary": "Pectoralis, Deltoids",
+    "secondary": "Triceps, Serratus Anterior, Core"
+  },
+  "Dumbbell Lateral Raise": {
+    "primary": "Deltoids",
+    "secondary": "Deltoids, Supraspinatus, Trapezius"
+  },
+  "Dumbbell Pullover": {
+    "primary": "Latissimus Dorsi, Pectoralis",
+    "secondary": "Teres, Triceps, Serratus Anterior, Core"
+  },
+  "Dumbbell Reverse Fly": {
+    "primary": "Deltoids, Rhomboids, Trapezius",
+    "secondary": "Infraspinatus, Teres, Rotator cuff, Trapezius"
+  },
+  "Kettlebell Goblet Squat": {
+    "primary": "Quadriceps, Glutes",
+    "secondary": "Hamstrings, Core, Adductors, Calves"
+  },
+  "Kettlebell Good Morning": {
+    "primary": "Erector Spinae, Glutes, Hamstrings",
+    "secondary": "Core, Adductors, Lower back"
+  },
+  "Kettlebell Lunges": {
+    "primary": "Quadriceps, Glutes",
+    "secondary": "Hamstrings, Calves, Core, Adductors"
+  },
+  "Kettlebell Overhead Press": {
+    "primary": "Deltoids, Triceps",
+    "secondary": "Trapezius, Serratus Anterior, Core"
+  },
+  "Kettlebell Swing": {
+    "primary": "Glutes, Hamstrings, Erector Spinae",
+    "secondary": "Adductors, Trapezius, Forearms, Core"
+  }
+}
