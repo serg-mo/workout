@@ -3,8 +3,9 @@ import moment from 'moment';
 export const LOCAL_STORAGE_KEY = 'workout';
 
 // max does not matter
-export const MIN_WORKOUTS = 2;
+export const MIN_WORKOUTS  = 2;
 export const MIN_EXERCISES = 3;
+export const MAX_SETS     = 4;
 
 export function isValidWorkouts(workouts) {
   // expected shape example: weekday > exercise > weight

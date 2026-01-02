@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function ExercisePickerV2({ workout, exercises, exercise, setExercise }) {
+export default function ExercisePickerV2({ workout, exercises, exercise: currentExercise, setExercise }) {
   const [exerciseOptions, setExerciseOptions] = useState([]);
 
   useEffect(() => {
@@ -10,24 +10,25 @@ export default function ExercisePickerV2({ workout, exercises, exercise, setExer
 
     // append a star per set for every exercise today
     setExerciseOptions(
-      Object.keys(exercises).map((value) => {
-        const sets = workout?.[value] ? workout[value].split(',') : [];
-        const stars = sets.length > 0 ? '*'.repeat(sets.length) : '';
-        return { value, stars };
+      Object.keys(exercises).map((ex) => {
+        const sets = workout?.[ex] ? workout[ex].split(',') : [];
+        // const setCount = sets.length > 0 ? '*'.repeat(sets.length) : '';
+        const setCount = sets.length > 0 ? ["I", "II", "III", "IV"][sets.length - 1] : '';
+        return { ex, setCount };
       })
     );
   }, [workout, exercises]);
 
   return (
     <div className="w-full flex flex-col gap-2 border border-gray-300 rounded-lg overflow-hidden">
-      {exerciseOptions.map(({ value, stars }) => (
+      {exerciseOptions.map(({ ex, setCount }) => (
         <div
-          key={value}
-          onClick={() => setExercise(value)}
-          className={`flex flex-row justify-between items-center px-2 py-3 ${exercise === value ? 'bg-gray-300' : 'bg-white'}`}
+          key={ex}
+          onClick={() => setExercise(ex)}
+          className={`flex flex-row justify-between items-center px-2 py-3 ${currentExercise === ex ? 'bg-gray-300' : 'bg-white'}`}
         >
-          <div>{value}</div>
-          <div>{stars}</div>
+          <div>{ex}</div>
+          <div>{setCount}</div>
         </div>
       ))}
     </div>
