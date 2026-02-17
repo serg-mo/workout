@@ -1,6 +1,5 @@
 import React from 'react';
-import { IoInformationCircleOutline } from "react-icons/io5";
-
+import { IoInformationCircleOutline } from 'react-icons/io5';
 
 // TODO: this would be a good place to explore workout calendar by exerice
 export default function Workouts({ workouts, onSelect }) {
@@ -21,9 +20,10 @@ export default function Workouts({ workouts, onSelect }) {
           {Object.keys(workout).map((exercise) => (
             <div key={exercise} className="flex items-center gap-2">
               {exercise}
-              <a href={formatUrl(exercise)} target="_blank" rel="noopener noreferrer"><IoInformationCircleOutline /></a>
+              <a href={formatUrl(exercise)} target="_blank" rel="noopener noreferrer">
+                <IoInformationCircleOutline />
+              </a>
             </div>
-
           ))}
         </div>
       ))}

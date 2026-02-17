@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export default function ExercisePickerV2({ workout, exercises, exercise: currentExercise, setExercise }) {
+export default function ExercisePickerV2({
+  workout,
+  exercises,
+  exercise: currentExercise,
+  setExercise,
+}) {
   const [exerciseOptions, setExerciseOptions] = useState([]);
 
   useEffect(() => {
@@ -13,7 +18,7 @@ export default function ExercisePickerV2({ workout, exercises, exercise: current
       Object.keys(exercises).map((ex) => {
         const sets = workout?.[ex] ? workout[ex].split(',') : [];
         // const setCount = sets.length > 0 ? '*'.repeat(sets.length) : '';
-        const setCount = sets.length > 0 ? ["I", "II", "III", "IV"][sets.length - 1] : '';
+        const setCount = sets.length > 0 ? ['I', 'II', 'III', 'IV'][sets.length - 1] : '';
         return { ex, setCount };
       })
     );

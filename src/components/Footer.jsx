@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '../lib';
 
@@ -12,7 +11,6 @@ export default function Footer({ onSetup }) {
         response.text().then(setVersion);
       }
     });
-
   }, []);
 
   const onImport = () => {
@@ -33,7 +31,7 @@ export default function Footer({ onSetup }) {
     // NOTE: Chrome breaks after ~2k chars, but 4 weeks of workouts fits
     // NOTE: spaces don't work on iPhone, so yaml is not an option
     const body = JSON.stringify(getLocalStorage(4 * 3));
-    const subject = `Workout ${new Date().toISOString().split('T')[0]}`
+    const subject = `Workout ${new Date().toISOString().split('T')[0]}`;
 
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
@@ -41,10 +39,22 @@ export default function Footer({ onSetup }) {
   return (
     <footer className="w-full text-sm">
       <div className="flex flex-row justify-between">
-        <a onClick={onSetup}>setup</a>
-        <a onClick={onImport}>import</a>
-        <a onClick={onExport}>export</a>
-        <a href="https://github.com/serg-mo/workout/commits/main/" target="_blank">v:{version}</a>
+        <a className="cursor-pointer rounded px-2 hover:bg-gray-200" onClick={onSetup}>
+          setup
+        </a>
+        <a className="cursor-pointer rounded px-2 hover:bg-gray-200" onClick={onImport}>
+          import
+        </a>
+        <a className="cursor-pointer rounded px-2 hover:bg-gray-200" onClick={onExport}>
+          export
+        </a>
+        <a
+          className="cursor-pointer rounded px-2 hover:bg-gray-200"
+          href="https://github.com/serg-mo/workout/commits/main/"
+          target="_blank"
+        >
+          v:{version}
+        </a>
       </div>
     </footer>
   );

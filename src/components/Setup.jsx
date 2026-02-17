@@ -1,39 +1,58 @@
 import yaml from 'js-yaml';
 import React, { useState } from 'react';
-import {
-  MIN_EXERCISES,
-  MIN_WORKOUTS,
-  getLocalStorage,
-  isValidWorkouts,
-  setLocalStorage,
-} from '../lib';
+import { getLocalStorage, setLocalStorage } from '../lib';
 
-const placeholder = [
-  'MONDAY:',
-  '  Dumbbell Flat Press: 20',
-  '  Dumbbell Fly: 10',
-  '  Dumbbell Pullover: 60',
-  '  Kettlebell Squat: 16',
-  '  Kettlebell Lunges: 16',
-  'TUESDAY:',
-  '  Dumbbell Incline Press: 20',
-  '  Dumbbell Press: 20',
-  '  Dumbbell Lateral Raise: 10',
-  '  Dumbbell Curl: 20',
-  '  Dumbbell Extension: 20',
-  'WEDNESDAY:',
-  '  Kettlebell Swing: 16',
-  '  Kettlebell Good Morning: 20',
-  '  Kettlebell Deadlift: 16',
-  '  Dumbbell Bent-Over Row: 20',
-  '  Dumbbell Front Raise: 10',
-].join('\n');
+const MIN_WORKOUTS = 2;
+const MIN_EXERCISES = 3;
+
+function isValidWorkouts(workouts) {
+  // expected shape example: weekday > exercise > weight
+  const isValidWorkouts =
+    workouts &&
+    Object.keys(workouts).length >= MIN_WORKOUTS &&
+    Object.keys(workouts).every((name) => isNaN(Number(name)));
+
+  const isValidExercises =
+    workouts &&
+    Object.values(workouts).every(
+      (exercises) =>
+        Object.keys(exercises).length >= MIN_EXERCISES &&
+        Object.values(exercises).every((weight) => !isNaN(Number(weight)))
+    );
+
+  return isValidWorkouts && isValidExercises;
+}
+
+const placeholder = {
+  MONDAY: {
+    'Kettlebell Squat': 16,
+    'Dumbbell Flat Press': 20,
+    'Dumbbell Pullover': 60,
+    'Dumbbell Fly': 10,
+  },
+  WEDNESDAY: {
+    'Kettlebell Overhead Press': 16,
+    'Dumbbell Incline Press': 20,
+    'Dumbbell Curl': 20,
+    'Dumbbell Extension': 20,
+  },
+  FRIDAY: {
+    'Kettlebell Swing': 16,
+    'Kettlebell Good Morning': 20,
+    'Kettlebell Deadlift': 16,
+    'Kettlebell Row': 16,
+  },
+};
+
+function getUpdatedWorkouts() {
+  const { workouts, history } = getLocalStorage();
+  // TODO: for every exercise, find the weight of the first set and update it from workouts/placeholder
+  return yaml.dump(Object.keys(workouts).length ? workouts : placeholder);
+}
 
 export default function Setup({ back }) {
-  const { workouts, history } = getLocalStorage();
-  const [value, setValue] = useState(
-    Object.keys(workouts).length ? yaml.dump(workouts) : placeholder
-  );
+  const { history } = getLocalStorage();
+  const [value, setValue] = useState(getUpdatedWorkouts());
 
   const onSubmit = (e) => {
     e.preventDefault();

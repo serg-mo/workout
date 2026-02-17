@@ -4,7 +4,13 @@ import Footer from './components/Footer';
 import Form from './components/Form';
 import Setup from './components/Setup';
 import Workouts from './components/Workouts';
-import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage, MAX_SETS } from './lib';
+import {
+  formatDate,
+  formatHistory,
+  formatSet,
+  getLocalStorage,
+  setLocalStorage,
+} from './lib';
 
 // TODO: I can see my github build on my Apple watch.state works, but the zoom is weird
 // TODO: I've got to make this  look good on a Apple Watch screen, right now only iPhone
@@ -15,9 +21,8 @@ import { formatDate, formatHistory, formatSet, getLocalStorage, setLocalStorage,
 
 // TODO: numerical selects centered, exercise picker no need to color code - just bold / underline / prefix.
 // TODO: Add countdown timer between sets.
-// TODO: Remove init weight from config. 
+// TODO: Remove init weight from config.
 // TODO: on page load, navigate to most recent workout
-
 
 // NOTE: no need to ever refresh the page, unless to pick a different workout
 export default function App() {
@@ -60,6 +65,7 @@ export default function App() {
 
   const handleSave = (exercise, weight, reps) => {
     setWorkout((prev) => {
+      const MAX_SETS = 4;
       const sets = (prev?.[exercise] ?? '').split(',').filter(Boolean); // ignore empties
       return sets.length < MAX_SETS
         ? {

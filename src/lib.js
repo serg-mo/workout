@@ -2,29 +2,6 @@ import moment from 'moment';
 
 export const LOCAL_STORAGE_KEY = 'workout';
 
-// max does not matter
-export const MIN_WORKOUTS  = 2;
-export const MIN_EXERCISES = 3;
-export const MAX_SETS     = 4;
-
-export function isValidWorkouts(workouts) {
-  // expected shape example: weekday > exercise > weight
-  const isValidWorkouts =
-    workouts &&
-    Object.keys(workouts).length >= MIN_WORKOUTS &&
-    Object.keys(workouts).every((name) => isNaN(Number(name)));
-
-  const isValidExercises =
-    workouts &&
-    Object.values(workouts).every(
-      (exercises) =>
-        Object.keys(exercises).length >= MIN_EXERCISES &&
-        Object.values(exercises).every((weight) => !isNaN(Number(weight)))
-    );
-
-  return isValidWorkouts && isValidExercises;
-}
-
 export function formatDate(when = new Date()) {
   return moment(when).format('YYYY-MM-DD');
 }
@@ -75,7 +52,6 @@ export function eraseLocalStorage() {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
 }
 
-// TODO: instead of size, take a startDate
 export function getLocalStorage(size = 0) {
   const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
   if (!data) {
@@ -93,11 +69,13 @@ export function getLocalStorage(size = 0) {
 // TODO: consider making a useLocalStorage helper
 
 export function formatHistory(history, size = 0) {
-  const entries = Object.entries(history).sort((a, b) => {
-    const dateA = new Date(a[0]);
-    const dateB = new Date(b[0]);
-    return dateB - dateA; // most recent first
-  }).filter(([date, workout]) => workout !== null);
+  const entries = Object.entries(history)
+    .sort((a, b) => {
+      const dateA = new Date(a[0]);
+      const dateB = new Date(b[0]);
+      return dateB - dateA; // most recent first
+    })
+    .filter(([date, workout]) => workout !== null);
 
   return Object.fromEntries(entries.slice(0, size || entries.length));
 }
@@ -118,5 +96,5 @@ export function makeWeightOptions(name) {
   }
 
   // console.log({ name, length, multiple })
-  return Array.from({ length }, (_, i) => min + (i * multiple));
+  return Array.from({ length }, (_, i) => min + i * multiple);
 }
