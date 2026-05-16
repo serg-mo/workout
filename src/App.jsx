@@ -36,12 +36,26 @@ export default function App() {
   const { workouts, history } = getLocalStorage();
 
   useEffect(() => {
+    try {
+      // query parameters set in Footer.jsx::onExport
+      const importWorkouts = JSON.parse(decodeURIComponent(new URLSearchParams(window.location.search).get('workouts')));
+      if (importWorkouts) { 
+        setLocalStorage({ workouts: importWorkouts, history });
+        window.history.replaceState({}, '', window.location.pathname); // same url without query params
+      }
+    } catch (e) {
+      console.error('Bad import:', e);
+    }
+  }, []);
+
+
+  useEffect(() => {
     const today = formatDate();
 
     if (workout === null && history?.[today]) {
       // load today's saved workout after page refresh, if available
       setWorkout(history[today]);
-    } else {
+    } else if (workout) {
       // NOTE: one workout per day
       setLocalStorage({ workouts, history: formatHistory({ ...history, [today]: workout }) });
     }
@@ -94,7 +108,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-dvh flex flex-col justify-start items-center gap-2 m-auto w-full sm:max-w-sm p-2">
+    <div className="h-full flex flex-col justify-start items-center gap-2 m-auto w-full sm:max-w-sm p-2">
       {isSetupShown ? (
         <Setup back={() => setIsSetupShown(false)} />
       ) : workoutName ? (

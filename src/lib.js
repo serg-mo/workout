@@ -48,10 +48,6 @@ export function setLocalStorage(payload) {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
 }
 
-export function eraseLocalStorage() {
-  localStorage.removeItem(LOCAL_STORAGE_KEY);
-}
-
 export function getLocalStorage(size = 0) {
   const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
   if (!data) {
@@ -67,7 +63,6 @@ export function getLocalStorage(size = 0) {
 }
 
 // TODO: consider making a useLocalStorage helper
-
 export function formatHistory(history, size = 0) {
   const entries = Object.entries(history)
     .sort((a, b) => {
